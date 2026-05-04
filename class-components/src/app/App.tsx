@@ -2,6 +2,7 @@ import React from 'react';
 import { fetchPokemon } from '@/api';
 import type { Pokemon } from '@/types';
 import { SearchBar, ResultsList } from '@/components';
+import { Spinner } from '@/components/spinner';
 
 type State = {
   error: string | null;
@@ -9,6 +10,7 @@ type State = {
   results: Pokemon[];
   loading: boolean;
   triggerError: boolean;
+  hasSearched: boolean;
 };
 
 export class App extends React.Component<{}, State> {
@@ -18,6 +20,7 @@ export class App extends React.Component<{}, State> {
     loading: false,
     error: null,
     triggerError: false,
+    hasSearched: false,
   };
 
   triggerErrorHandler = () => {
@@ -27,9 +30,13 @@ export class App extends React.Component<{}, State> {
   handleSearch = async (value: string) => {
     const trimmed = value.trim();
 
-    if (trimmed === this.state.search) return;
+    if (trimmed === this.state.search && this.state.hasSearched) return;
 
-    this.setState({ search: trimmed, loading: true, error: null });
+    this.setState({
+      search: trimmed,
+      loading: true,
+      error: null,
+    });
 
     try {
       const data = await fetchPokemon(trimmed);
@@ -38,6 +45,7 @@ export class App extends React.Component<{}, State> {
         results: data,
         loading: false,
         error: null,
+        hasSearched: true,
       });
 
       localStorage.setItem('search', trimmed);
@@ -46,14 +54,15 @@ export class App extends React.Component<{}, State> {
         error: e instanceof Error ? e.message : 'Something went wrong',
         loading: false,
         results: [],
+        hasSearched: true,
       });
     }
   };
 
   override componentDidMount() {
     const saved = localStorage.getItem('search');
+
     if (saved) {
-      this.setState({ search: saved });
       this.handleSearch(saved);
     } else {
       this.handleSearch('');
@@ -61,7 +70,7 @@ export class App extends React.Component<{}, State> {
   }
 
   override render() {
-    const { error, results, loading } = this.state;
+    const { error, results, loading, hasSearched } = this.state;
 
     if (this.state.triggerError) {
       throw new Error('Test Error Boundary');
@@ -74,25 +83,24 @@ export class App extends React.Component<{}, State> {
         </section>
 
         <section className="flex-1 p-6">
-          {loading && <p className="text-center text-muted-foreground">Loading...</p>}
+          {loading && <Spinner />}
 
           {!loading && !error && results.length > 0 && <ResultsList results={results} />}
 
-          {!loading && !error && results.length === 0 && (
+          {!loading && !error && results.length === 0 && hasSearched && (
             <p className="text-center text-muted-foreground">No results found</p>
           )}
 
           {!loading && error && <div className="text-center text-red-500">{error}</div>}
         </section>
-        <div>
-          <div className="flex justify-center">
-            <button
-              onClick={this.triggerErrorHandler}
-              className="px-10 py-4 mb-8 mt-2 text-sm rounded-full bg-primary/10 text-primary border border-primary/20 hover:scale-[1.02] hover:border-primary/30"
-            >
-              Test Error
-            </button>
-          </div>
+
+        <div className="flex justify-center">
+          <button
+            onClick={this.triggerErrorHandler}
+            className="px-10 py-4 mb-8 mt-2 text-sm rounded-full bg-primary/10 text-primary border border-primary/20 hover:scale-[1.02] hover:border-primary/30"
+          >
+            Test Error
+          </button>
         </div>
       </div>
     );
