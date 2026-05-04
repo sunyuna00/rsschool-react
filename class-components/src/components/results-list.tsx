@@ -1,7 +1,7 @@
 import type { Pokemon } from '@/types';
-import Card from './card';
+import { Card } from './card';
 
-const ResultsList = ({ results }: { results: Pokemon[] }) => {
+export const ResultsList = ({ results }: { results: Pokemon[] }) => {
   if (!results.length) {
     return <p className="text-muted-foreground">No results found</p>;
   }
@@ -14,5 +14,3 @@ const ResultsList = ({ results }: { results: Pokemon[] }) => {
     </section>
   );
 };
-
-export default ResultsList;

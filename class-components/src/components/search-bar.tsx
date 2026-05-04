@@ -10,7 +10,7 @@ type State = {
   input: string;
 };
 
-class SearchBar extends React.Component<Props, State> {
+export class SearchBar extends React.Component<Props, State> {
   override state: State = {
     input: this.props.initialValue || '',
   };
@@ -26,7 +26,7 @@ class SearchBar extends React.Component<Props, State> {
     this.props.onSearch(value);
   };
 
-  handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       this.handleSubmit();
     }
@@ -38,7 +38,7 @@ class SearchBar extends React.Component<Props, State> {
         <input
           value={this.state.input}
           onChange={this.handleChange}
-          onKeyDown={this.handleKeyDown}
+          onKeyDown={this.onKeyDown}
           placeholder="Search Pokémon..."
           className="w-full bg-background text-foreground border border-primary/20 rounded-2xl px-4 py-3 placeholder:text-muted-foreground focus:outline-none focus:border-primary/40 focus:ring-2 focus:ring-primary/10 transition-all duration-200"
         />
@@ -55,4 +55,3 @@ class SearchBar extends React.Component<Props, State> {
   }
 }
 
-export default SearchBar;

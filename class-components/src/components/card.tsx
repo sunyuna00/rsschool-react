@@ -1,6 +1,9 @@
-import type { Pokemon } from "@/types";
+import type { Pokemon } from '@/types';
 
-const Card = ({ item }: { item: Pokemon }) => {
+export const Card = ({ item }: { item: Pokemon }) => {
+  // if (item.name === 'pikachu') {
+  //   throw new Error('Test error boundary');
+  // }
   return (
     <div
       className="
@@ -30,17 +33,11 @@ const Card = ({ item }: { item: Pokemon }) => {
           shadow-inner
         "
       >
-        <img
-          src={item.image}
-          alt={item.name}
-          className="w-24 h-24 object-contain"
-        />
+        <img src={item.image} alt={item.name} className="w-24 h-24 object-contain" />
       </div>
 
       <div className="flex flex-col gap-2 w-full">
-        <h3 className="font-bold text-xl capitalize text-foreground">
-          {item.name}
-        </h3>
+        <h3 className="font-bold text-xl capitalize text-foreground">{item.name}</h3>
 
         <div className="flex flex-wrap gap-2">
           {item.types.map((type) => (
@@ -61,18 +58,18 @@ const Card = ({ item }: { item: Pokemon }) => {
         </div>
 
         <div className="text-sm text-muted-foreground space-y-1">
-          <p>Height: <span className="text-foreground">{item.height}</span></p>
-          <p>Weight: <span className="text-foreground">{item.weight}</span></p>
           <p>
-            Abilities:{" "}
-            <span className="text-foreground">
-              {item.abilities.join(", ") || 'Unknown'}
-            </span>
+            Height: <span className="text-foreground">{item.height}</span>
+          </p>
+          <p>
+            Weight: <span className="text-foreground">{item.weight}</span>
+          </p>
+          <p>
+            Abilities:{' '}
+            <span className="text-foreground">{item.abilities.join(', ') || 'Unknown'}</span>
           </p>
         </div>
       </div>
     </div>
   );
 };
-
-export default Card;

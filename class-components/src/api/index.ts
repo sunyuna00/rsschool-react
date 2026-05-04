@@ -11,9 +11,9 @@ type PokemonRaw = {
   abilities: { ability: { name: string } }[];
 };
 
-const mapPokemon = (data: PokemonRaw) => ({
+const mapPokemon = (data: PokemonRaw): Pokemon => ({
   name: data.name,
-  image: data.sprites.front_default,
+  image: data.sprites.front_default || "",
   types: data.types.map((t) => t.type.name),
   weight: data.weight,
   height: data.height,
