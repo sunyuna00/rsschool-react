@@ -13,7 +13,7 @@ type State = {
   hasSearched: boolean;
 };
 
-export class App extends React.Component<{}, State> {
+export class App extends React.Component<Record<string, never>, State> {
   override state: State = {
     search: '',
     results: [],
