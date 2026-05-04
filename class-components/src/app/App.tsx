@@ -27,7 +27,7 @@ export class App extends React.Component<{}, State> {
   handleSearch = async (value: string) => {
     const trimmed = value.trim();
 
-    if (!trimmed || trimmed === this.state.search) return;
+    if (trimmed === this.state.search) return;
 
     this.setState({ search: trimmed, loading: true, error: null });
 
@@ -85,14 +85,14 @@ export class App extends React.Component<{}, State> {
           {!loading && error && <div className="text-center text-red-500">{error}</div>}
         </section>
         <div>
-          <button
-            onClick={this.triggerErrorHandler}
-            className="px-4 py-2 bg-red-500 text-white rounded"
-          >
-            Test Error
-          </button>
-
-          <div>App content here</div>
+          <div className="flex justify-center">
+            <button
+              onClick={this.triggerErrorHandler}
+              className="px-10 py-4 mb-8 mt-2 text-sm rounded-full bg-primary/10 text-primary border border-primary/20 hover:scale-[1.02] hover:border-primary/30"
+            >
+              Test Error
+            </button>
+          </div>
         </div>
       </div>
     );

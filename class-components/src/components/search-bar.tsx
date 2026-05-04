@@ -21,8 +21,6 @@ export class SearchBar extends React.Component<Props, State> {
 
   handleSubmit = () => {
     const value = this.state.input.trim();
-    if (!value) return;
-
     this.props.onSearch(value);
   };
 
@@ -31,6 +29,12 @@ export class SearchBar extends React.Component<Props, State> {
       this.handleSubmit();
     }
   };
+
+  override componentDidUpdate(prevProps: Props) {
+    if (prevProps.initialValue !== this.props.initialValue) {
+      this.setState({ input: this.props.initialValue || '' });
+    }
+  }
 
   override render() {
     return (
@@ -54,4 +58,3 @@ export class SearchBar extends React.Component<Props, State> {
     );
   }
 }
-
