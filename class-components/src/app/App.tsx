@@ -1,5 +1,5 @@
 import React from 'react';
-import { fetchPokemon } from '@/api';
+import { fetchPokemon } from '@/api/fetchPokemon';
 import type { Pokemon } from '@/types';
 import { SearchBar, ResultsList } from '@/components';
 import { Spinner } from '@/components/spinner';
