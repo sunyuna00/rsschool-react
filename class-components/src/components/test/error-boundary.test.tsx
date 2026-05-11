@@ -1,12 +1,17 @@
-import { render, screen } from '@testing-library/react';
+import { cleanup, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-
+import { describe, test, expect, vi, afterEach } from 'vitest';
 import { ErrorBoundary } from '../error-boundary';
 
 describe('ErrorBoundary', () => {
   const ProblemComponent = () => {
     throw new Error('Test error');
   };
+
+  afterEach(() => {
+    cleanup();
+    vi.restoreAllMocks();
+  });
 
   test('renders children when there is no error', () => {
     render(
@@ -20,9 +25,7 @@ describe('ErrorBoundary', () => {
 
   test('renders fallback UI when error happens', () => {
 
-    const consoleSpy = vi.spyOn(console, 'error');
-
-    consoleSpy.mockImplementation(() => {});
+    vi.spyOn(console, 'error').mockImplementation(() => {});
 
     render(
       <ErrorBoundary>
@@ -42,9 +45,7 @@ describe('ErrorBoundary', () => {
   });
 
   test('calls console.error when error is caught', () => {
-    const consoleSpy = vi.spyOn(console, 'error');
-
-    consoleSpy.mockImplementation(() => {});
+    const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
 
     render(
       <ErrorBoundary>
@@ -60,9 +61,7 @@ describe('ErrorBoundary', () => {
   test('clicking try again button keeps fallback UI if error still exists', async () => {
     const user = userEvent.setup();
 
-    const consoleSpy = vi.spyOn(console, 'error');
-
-    consoleSpy.mockImplementation(() => {});
+    vi.spyOn(console, 'error').mockImplementation(() => {});
 
     render(
       <ErrorBoundary>

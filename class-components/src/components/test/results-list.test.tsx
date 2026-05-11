@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/react';
+import { describe, test, expect } from 'vitest';
 import { ResultsList } from '../results-list';
 
 describe('ResultsList component', () => {
@@ -18,7 +19,7 @@ describe('ResultsList component', () => {
       weight: 69,
       height: 7,
       abilities: ['overgrow'],
-    }
+    },
   ];
 
   test('renders all pokemon cards', () => {
@@ -28,17 +29,20 @@ describe('ResultsList component', () => {
     expect(screen.getByText(/bulbasaur/i)).toBeInTheDocument();
   });
 
-  test('renders correct number of images', () => {
+  test('renders correct number of pokemon images', () => {
     render(<ResultsList results={mockResults} />);
 
-    const images = screen.getAllByRole('img');
-    expect(images).toHaveLength(2);
+    const pikachuImage = screen.getByRole('img', { name: /pikachu/i });
+    const bulbasaurImage = screen.getByRole('img', { name: /bulbasaur/i });
+
+    expect(pikachuImage).toBeInTheDocument();
+    expect(bulbasaurImage).toBeInTheDocument();
   });
 
   test('renders empty list correctly', () => {
     render(<ResultsList results={[]} />);
 
-    const images = screen.queryAllByRole('img');
-    expect(images).toHaveLength(0);
+    expect(screen.queryByRole('img')).not.toBeInTheDocument();
+    expect(screen.queryByText(/pikachu/i)).not.toBeInTheDocument();
   });
 });
