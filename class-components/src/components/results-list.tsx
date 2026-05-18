@@ -9,7 +9,7 @@ export const ResultsList = ({ results }: { results: Pokemon[] }) => {
       {results.map((item) => (
         <Link
           key={item.name}
-          to={`/pokemon/${item.id}`}
+          to={`/details/${item.id}`}
         >
           <Card item={item} />
         </Link>
