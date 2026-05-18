@@ -3,6 +3,7 @@ import { fetchPokemon } from '@/api/fetchPokemon';
 import type { Pokemon } from '@/types';
 import { SearchBar, ResultsList } from '@/components';
 import { Spinner } from '@/components/spinner';
+import { Outlet } from 'react-router-dom';
 
 type State = {
   error: string | null;
@@ -13,9 +14,14 @@ type State = {
   hasSearched: boolean;
 };
 
-export class App extends React.Component<Record<string, never>, State> {
+type Props = {
+  initialSearch: string;
+  onSearch: (value: string) => void;
+};
+
+export class HomePage extends React.Component<Props, State> {
   override state: State = {
-    search: '',
+    search: this.props.initialSearch,
     results: [],
     loading: false,
     error: null,
@@ -31,6 +37,8 @@ export class App extends React.Component<Record<string, never>, State> {
     const trimmed = value.trim();
 
     if (trimmed === this.state.search && this.state.hasSearched) return;
+
+    this.props.onSearch(trimmed);
 
     this.setState({
       search: trimmed,
@@ -60,13 +68,7 @@ export class App extends React.Component<Record<string, never>, State> {
   };
 
   override componentDidMount() {
-    const saved = localStorage.getItem('search');
-
-    if (saved) {
-      this.handleSearch(saved);
-    } else {
-      this.handleSearch('');
-    }
+    this.props.onSearch(this.props.initialSearch);
   }
 
   override render() {
@@ -82,17 +84,20 @@ export class App extends React.Component<Record<string, never>, State> {
           <SearchBar onSearch={this.handleSearch} initialValue={this.state.search} />
         </section>
 
-        <section className="flex-1 p-6">
-          {loading && <Spinner />}
+        <div className="flex flex-1">
+          <section className="flex-1 p-6">
+            {loading && <Spinner />}
 
-          {!loading && !error && results.length > 0 && <ResultsList results={results} />}
+            {!loading && !error && results.length > 0 && <ResultsList results={results} />}
 
-          {!loading && !error && results.length === 0 && hasSearched && (
-            <p className="text-center text-muted-foreground">No results found</p>
-          )}
+            {!loading && !error && results.length === 0 && hasSearched && (
+              <p className="text-center text-muted-foreground">No results found</p>
+            )}
 
-          {!loading && error && <div className="text-center text-red-500">{error}</div>}
-        </section>
+            {!loading && error && <div className="text-center text-red-500">{error}</div>}
+          </section>
+          <Outlet />
+        </div>
 
         <div className="flex justify-center">
           <button
