@@ -6,11 +6,10 @@ import { Spinner } from '@/components/spinner';
 import { Outlet } from 'react-router-dom';
 
 type State = {
-  error: string | null;
   search: string;
   results: Pokemon[];
   loading: boolean;
-  triggerError: boolean;
+  error: string | null;
   hasSearched: boolean;
 };
 
@@ -25,13 +24,14 @@ export class HomePage extends React.Component<Props, State> {
     results: [],
     loading: false,
     error: null,
-    triggerError: false,
     hasSearched: false,
   };
 
-  triggerErrorHandler = () => {
-    this.setState({ triggerError: true });
-  };
+  override componentDidMount() {
+    if (this.state.search) {
+      this.handleSearch(this.state.search);
+    }
+  }
 
   handleSearch = async (value: string) => {
     const trimmed = value.trim();
@@ -52,7 +52,6 @@ export class HomePage extends React.Component<Props, State> {
       this.setState({
         results: data,
         loading: false,
-        error: null,
         hasSearched: true,
       });
 
@@ -67,45 +66,36 @@ export class HomePage extends React.Component<Props, State> {
     }
   };
 
-  override componentDidMount() {
-    this.props.onSearch(this.props.initialSearch);
-  }
-
   override render() {
-    const { error, results, loading, hasSearched } = this.state;
-
-    if (this.state.triggerError) {
-      throw new Error('Test Error Boundary');
-    }
+    const { search, results, loading, error, hasSearched } = this.state;
 
     return (
-      <div className="min-h-screen bg-background text-foreground flex flex-col">
+      <div className="min-h-screen flex flex-col">
         <section className="p-6 border-b border-primary/10">
-          <SearchBar onSearch={this.handleSearch} initialValue={this.state.search} />
+          <SearchBar
+            onSearch={this.handleSearch}
+            initialValue={search}
+          />
         </section>
 
         <div className="flex flex-1">
           <section className="flex-1 p-6">
             {loading && <Spinner />}
 
-            {!loading && !error && results.length > 0 && <ResultsList results={results} />}
-
-            {!loading && !error && results.length === 0 && hasSearched && (
-              <p className="text-center text-muted-foreground">No results found</p>
+            {!loading && !error && results.length > 0 && (
+              <ResultsList results={results} />
             )}
 
-            {!loading && error && <div className="text-center text-red-500">{error}</div>}
-          </section>
-          <Outlet />
-        </div>
+            {!loading && !error && results.length === 0 && hasSearched && (
+              <p>No results found</p>
+            )}
 
-        <div className="flex justify-center">
-          <button
-            onClick={this.triggerErrorHandler}
-            className="px-10 py-4 mb-8 mt-2 text-sm rounded-full bg-primary/10 text-primary border border-primary/20 hover:scale-[1.02] hover:border-primary/30"
-          >
-            Test Error
-          </button>
+            {!loading && error && (
+              <p className="text-red-500">{error}</p>
+            )}
+          </section>
+
+          <Outlet />
         </div>
       </div>
     );

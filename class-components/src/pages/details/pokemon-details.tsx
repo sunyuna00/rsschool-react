@@ -7,28 +7,38 @@ export const PokemonDetails = () => {
 
   const [pokemon, setPokemon] = useState<Pokemon | null>(null);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchPokemon = async () => {
       if (!id) return;
 
       setLoading(true);
+      setError(null);
 
-      const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`);
-      const data = await res.json();
+      try {
+        const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`);
+        const data = await res.json();
 
-      const formatted: Pokemon = {
-        id: data.id,
-        name: data.name,
-        image: data.sprites.front_default,
-        types: data.types.map((t: { type: { name: string } }) => t.type.name),
-        weight: data.weight,
-        height: data.height,
-        abilities: data.abilities.map((a: { ability: { name: string } }) => a.ability.name),
-      };
+        const formatted: Pokemon = {
+          id: data.id,
+          name: data.name,
+          image: data.sprites.front_default,
+          types: data.types.map((t: { type: { name: string } }) => t.type.name),
+          weight: data.weight,
+          height: data.height,
+          abilities: data.abilities.map((a: { ability: { name: string } }) =>
+            typeof a === 'object' && a !== null ? a.ability.name : ''
+          ),
+        };
 
-      setPokemon(formatted);
-      setLoading(false);
+        setPokemon(formatted);
+      } catch {
+        setError('Failed to load Pokémon');
+        setPokemon(null);
+      } finally {
+        setLoading(false);
+      }
     };
 
     fetchPokemon();
@@ -44,37 +54,27 @@ export const PokemonDetails = () => {
         </Link>
       </div>
 
-      {loading && <p className="text-gray-500">Loading...</p>}
+      {loading && <p>Loading...</p>}
 
-      {!loading && pokemon && (
+      {error && <p className="text-red-500">{error}</p>}
+
+      {!loading && !error && pokemon && (
         <>
           <div className="flex justify-center">
-            <img
-              src={pokemon.image}
-              alt={pokemon.name}
-              className="w-32 h-32"
-            />
+            <img src={pokemon.image} alt={pokemon.name} className="w-32 h-32" />
           </div>
 
-          <h3 className="text-lg font-bold capitalize text-center">
-            {pokemon.name}
-          </h3>
+          <h3 className="text-lg font-bold capitalize text-center">{pokemon.name}</h3>
 
-          <p className="text-sm text-gray-600">
-            ID: {pokemon.id}
-          </p>
+          <p>ID: {pokemon.id}</p>
 
-          <p className="text-sm text-gray-600">
+          <p>
             Height: {pokemon.height} | Weight: {pokemon.weight}
           </p>
 
-          <p className="text-sm">
-            Types: {pokemon.types.join(', ')}
-          </p>
+          <p>Types: {pokemon.types.join(', ')}</p>
 
-          <p className="text-sm">
-            Abilities: {pokemon.abilities.join(', ')}
-          </p>
+          <p>Abilities: {pokemon.abilities.join(', ')}</p>
         </>
       )}
     </aside>
