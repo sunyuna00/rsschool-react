@@ -3,6 +3,7 @@ import type { Pokemon } from '@/types';
 const API_URL = 'https://pokeapi.co/api/v2/pokemon';
 
 type PokemonRaw = {
+  id: number;
   name: string;
   sprites: { front_default: string };
   types: { type: { name: string } }[];
@@ -12,6 +13,7 @@ type PokemonRaw = {
 };
 
 const mapPokemon = (data: PokemonRaw): Pokemon => ({
+  id: data.id,
   name: data.name,
   image: data.sprites.front_default || '',
   types: data.types.map((t) => t.type.name),

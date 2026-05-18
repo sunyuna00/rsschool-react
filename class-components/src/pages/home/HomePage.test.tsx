@@ -2,7 +2,7 @@ import { render, screen, waitFor } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import userEvent from '@testing-library/user-event';
 
-import { App } from './App';
+import { App } from '../../App';
 import { fetchPokemon } from '@/api/fetchPokemon';
 import { ErrorBoundary } from '@/components';
 
@@ -52,6 +52,7 @@ describe('App', () => {
         weight: 100,
         height: 10,
         abilities: ['static'],
+        id: 1,
       },
     ]);
 
@@ -69,6 +70,7 @@ describe('App', () => {
         weight: number;
         height: number;
         abilities: string[];
+        id: number;
       }[]
     ) => void;
 
@@ -80,6 +82,7 @@ describe('App', () => {
         weight: 100,
         height: 10,
         abilities: ['static'],
+        id: 1,
       },
     ];
 
@@ -110,6 +113,7 @@ describe('App', () => {
         weight: 90,
         height: 17,
         abilities: ['blaze'],
+        id: 1,
       },
     ]);
 
@@ -135,6 +139,7 @@ describe('App', () => {
         weight: 100,
         height: 10,
         abilities: ['static'],
+        id: 1,
       },
     ]);
 

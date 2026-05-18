@@ -1,6 +1,9 @@
 import { createRoot } from 'react-dom/client';
+import { BrowserRouter } from 'react-router-dom';
+
 import './index.css';
-import { App } from './app/App';
+
+import { App } from './App';
 import { ErrorBoundary } from './components';
 
 const rootElement = document.getElementById('root');
@@ -10,7 +13,9 @@ if (!rootElement) {
 }
 
 createRoot(rootElement).render(
-  <ErrorBoundary>
-    <App />
-  </ErrorBoundary>
+  <BrowserRouter>
+    <ErrorBoundary>
+      <App />
+    </ErrorBoundary>
+  </BrowserRouter>
 );
