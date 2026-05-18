@@ -1,103 +1,68 @@
-import React from 'react';
+import React, {  useState } from 'react';
 import { fetchPokemon } from '@/api/fetchPokemon';
 import type { Pokemon } from '@/types';
 import { SearchBar, ResultsList } from '@/components';
 import { Spinner } from '@/components/spinner';
 import { Outlet } from 'react-router-dom';
 
-type State = {
-  search: string;
-  results: Pokemon[];
-  loading: boolean;
-  error: string | null;
-  hasSearched: boolean;
-};
-
 type Props = {
   initialSearch: string;
   onSearch: (value: string) => void;
 };
 
-export class HomePage extends React.Component<Props, State> {
-  override state: State = {
-    search: this.props.initialSearch,
-    results: [],
-    loading: false,
-    error: null,
-    hasSearched: false,
-  };
+export const HomePage: React.FC<Props> = ({ initialSearch, onSearch }) => {
+  const [search, setSearch] = useState(initialSearch);
+  const [results, setResults] = useState<Pokemon[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [hasSearched, setHasSearched] = useState(false);
 
-  override componentDidMount() {
-    if (this.state.search) {
-      this.handleSearch(this.state.search);
-    }
-  }
-
-  handleSearch = async (value: string) => {
+  const handleSearch = async (value: string) => {
     const trimmed = value.trim();
 
-    if (trimmed === this.state.search && this.state.hasSearched) return;
+    if (trimmed === search && hasSearched) return;
 
-    this.props.onSearch(trimmed);
+    onSearch(trimmed);
+    setSearch(trimmed);
 
-    this.setState({
-      search: trimmed,
-      loading: true,
-      error: null,
-    });
+    setLoading(true);
+    setError(null);
 
     try {
       const data = await fetchPokemon(trimmed);
 
-      this.setState({
-        results: data,
-        loading: false,
-        hasSearched: true,
-      });
+      setResults(data);
+      setHasSearched(true);
 
       localStorage.setItem('search', trimmed);
     } catch (e) {
-      this.setState({
-        error: e instanceof Error ? e.message : 'Something went wrong',
-        loading: false,
-        results: [],
-        hasSearched: true,
-      });
+      setError(e instanceof Error ? e.message : 'Something went wrong');
+      setResults([]);
+      setHasSearched(true);
+    } finally {
+      setLoading(false);
     }
   };
 
-  override render() {
-    const { search, results, loading, error, hasSearched } = this.state;
+  return (
+    <div className="min-h-screen flex flex-col">
+      <section className="p-6 border-b border-primary/10">
+        <SearchBar onSearch={handleSearch} initialValue={search} />
+      </section>
 
-    return (
-      <div className="min-h-screen flex flex-col">
-        <section className="p-6 border-b border-primary/10">
-          <SearchBar
-            onSearch={this.handleSearch}
-            initialValue={search}
-          />
+      <div className="flex flex-1">
+        <section className="flex-1 p-6">
+          {loading && <Spinner />}
+
+          {!loading && !error && results.length > 0 && <ResultsList results={results} />}
+
+          {!loading && !error && results.length === 0 && hasSearched && <p>No results found</p>}
+
+          {!loading && error && <p className="text-red-500">{error}</p>}
         </section>
 
-        <div className="flex flex-1">
-          <section className="flex-1 p-6">
-            {loading && <Spinner />}
-
-            {!loading && !error && results.length > 0 && (
-              <ResultsList results={results} />
-            )}
-
-            {!loading && !error && results.length === 0 && hasSearched && (
-              <p>No results found</p>
-            )}
-
-            {!loading && error && (
-              <p className="text-red-500">{error}</p>
-            )}
-          </section>
-
-          <Outlet />
-        </div>
+        <Outlet />
       </div>
-    );
-  }
-}
+    </div>
+  );
+};
