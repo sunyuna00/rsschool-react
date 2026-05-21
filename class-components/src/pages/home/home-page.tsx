@@ -7,10 +7,17 @@ import { Outlet } from 'react-router-dom';
 
 type Props = {
   initialSearch: string;
-  onSearch: (value: string) => void;
 };
 
-export const HomePage: React.FC<Props> = ({ initialSearch, onSearch }) => {
+export const HomePage: React.FC<Props> = ({ initialSearch }) => {
+  const [query, setQuery] = useState<string>(() => {
+    if (typeof window === 'undefined') {
+      return initialSearch ?? '';
+    }
+
+    const saved = localStorage.getItem('search');
+    return saved ?? initialSearch ?? '';
+  });
   const [results, setResults] = useState<Pokemon[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -33,12 +40,7 @@ export const HomePage: React.FC<Props> = ({ initialSearch, onSearch }) => {
       setError(null);
 
       try {
-        const saved = localStorage.getItem('search');
-
-        const query = saved ?? initialSearch ?? '';
-
         const data = await fetchPokemon(query);
-
         setResults(data);
         setHasSearched(true);
       } catch (e) {
@@ -51,23 +53,23 @@ export const HomePage: React.FC<Props> = ({ initialSearch, onSearch }) => {
     };
 
     load();
-  }, [initialSearch]);
+  }, [query]);
 
   return (
     <div className="min-h-screen flex flex-col">
       <section className="p-6 border-b border-primary/10">
-        <SearchBar onSearch={onSearch} initialValue={initialSearch} />
+        <SearchBar onSearch={setQuery} initialValue={query} />
       </section>
 
       <div className="flex flex-1">
         <section className="flex-1 p-6">
-          {loading && <Spinner />}
+          {loading && <Spinner data-testid="spinner" />}
 
           {!loading && !error && results.length > 0 && <ResultsList results={visibleResults} />}
 
           {!loading && !error && results.length === 0 && hasSearched && <p>No results found</p>}
 
-          {!loading && error && <p className="text-red-500">{error}</p>}
+          {!loading && error && <p>{error}</p>}
 
           <div className="flex justify-center mt-6">
             <button
