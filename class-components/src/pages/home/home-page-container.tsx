@@ -9,17 +9,16 @@ export const HomePageContainer = () => {
   const handleSearch = (value: string) => {
     const trimmed = value.trim();
 
-    setSearchParams((params) => {
-      const next = new URLSearchParams(params);
+    setSearchParams((prev) => {
+      const next = new URLSearchParams(prev);
 
       if (trimmed) {
         next.set('search', trimmed);
-        next.set('page', '1');
       } else {
         next.delete('search');
-        next.set('page', '1');
       }
 
+      next.set('page', '1');
       return next;
     });
   };

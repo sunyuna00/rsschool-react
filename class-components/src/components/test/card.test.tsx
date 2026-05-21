@@ -3,6 +3,7 @@ import { Card } from '../card';
 
 describe('Card component', () => {
   const mockPokemon = {
+    id: 25,
     name: 'pikachu',
     image: 'pikachu.png',
     types: ['electric'],

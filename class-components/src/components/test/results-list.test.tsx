@@ -1,10 +1,12 @@
 import { render, screen } from '@testing-library/react';
 import { describe, test, expect } from 'vitest';
 import { ResultsList } from '../results-list';
+import { MemoryRouter } from 'react-router-dom';
 
 describe('ResultsList component', () => {
   const mockResults = [
     {
+      id: 25,
       name: 'pikachu',
       image: 'pikachu.png',
       types: ['electric'],
@@ -13,6 +15,7 @@ describe('ResultsList component', () => {
       abilities: ['static'],
     },
     {
+      id: 1,
       name: 'bulbasaur',
       image: 'bulbasaur.png',
       types: ['grass', 'poison'],
@@ -23,14 +26,22 @@ describe('ResultsList component', () => {
   ];
 
   test('renders all pokemon cards', () => {
-    render(<ResultsList results={mockResults} />);
+    render(
+      <MemoryRouter>
+        <ResultsList results={mockResults} />
+      </MemoryRouter>
+    );
 
     expect(screen.getByText(/pikachu/i)).toBeInTheDocument();
     expect(screen.getByText(/bulbasaur/i)).toBeInTheDocument();
   });
 
   test('renders correct number of pokemon images', () => {
-    render(<ResultsList results={mockResults} />);
+    render(
+      <MemoryRouter>
+        <ResultsList results={mockResults} />
+      </MemoryRouter>
+    );
 
     const pikachuImage = screen.getByRole('img', { name: /pikachu/i });
     const bulbasaurImage = screen.getByRole('img', { name: /bulbasaur/i });
@@ -40,7 +51,11 @@ describe('ResultsList component', () => {
   });
 
   test('renders empty list correctly', () => {
-    render(<ResultsList results={[]} />);
+    render(
+      <MemoryRouter>
+        <ResultsList results={[]} />
+      </MemoryRouter>
+    );
 
     expect(screen.queryByRole('img')).not.toBeInTheDocument();
     expect(screen.queryByText(/pikachu/i)).not.toBeInTheDocument();

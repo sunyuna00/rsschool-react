@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Search } from 'lucide-react';
 
 type Props = {
@@ -6,19 +6,20 @@ type Props = {
   initialValue?: string;
 };
 
-export const SearchBar: React.FC<Props> = ({
-  onSearch,
-  initialValue = '',
-}) => {
+export const SearchBar: React.FC<Props> = ({ onSearch, initialValue = '' }) => {
   const [input, setInput] = useState(initialValue);
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setInput(initialValue);
+  }, [initialValue]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInput(e.target.value);
   };
 
   const handleSubmit = () => {
-    const value = input.trim();
-    onSearch(value);
+    onSearch(input.trim());
   };
 
   const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -26,7 +27,6 @@ export const SearchBar: React.FC<Props> = ({
       handleSubmit();
     }
   };
-
 
   return (
     <div className="mt-12 mx-auto w-[min(100%-24px,900px)] bg-card border border-primary/10 rounded-3xl p-6 flex gap-3 items-center justify-center shadow-lg shadow-primary/5 transition-all duration-300 hover:border-primary/20">
