@@ -1,8 +1,8 @@
-import { fetchPokemon, PokemonDetails, type Pokemon } from '@/entities';
+import { fetchPokemon, type Pokemon } from '@/entities';
 import { Spinner, useLocalStorage } from '@/shared';
 import { Pagination, ResultsList, SearchBar } from '@/widgets';
 import React, { useEffect, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { Outlet, useSearchParams } from 'react-router-dom';
 
 type Props = {
   initialSearch: string;
@@ -110,9 +110,7 @@ export const HomePage: React.FC<Props> = ({ initialSearch }) => {
           </div>
         </section>
 
-        <div className="shrink-0">
-          <PokemonDetails />
-        </div>
+          <Outlet />
       </div>
     </div>
   );

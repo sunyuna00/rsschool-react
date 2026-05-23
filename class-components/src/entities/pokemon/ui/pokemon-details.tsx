@@ -1,26 +1,35 @@
-import { useEffect, useState } from 'react';
-import { Link, useSearchParams } from 'react-router-dom';
-import type { Pokemon } from '../model/types';
 import { Spinner } from '@/shared';
+
+import { useEffect, useState } from 'react';
+
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
+
+import type { Pokemon } from '../model/types';
 
 export const PokemonDetails = () => {
   const [pokemon, setPokemon] = useState<Pokemon | null>(null);
+
   const [loading, setLoading] = useState(false);
+
   const [error, setError] = useState<string | null>(null);
 
-  const [searchParams] = useSearchParams();
+  const { id } = useParams();
 
-  const id = searchParams.get('details');
+  const navigate = useNavigate();
+
+  const [searchParams] = useSearchParams();
 
   useEffect(() => {
     const fetchPokemon = async () => {
       if (!id) return;
 
       setLoading(true);
+
       setError(null);
 
       try {
         const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`);
+
         const data = await res.json();
 
         const formatted: Pokemon = {
@@ -36,6 +45,7 @@ export const PokemonDetails = () => {
         setPokemon(formatted);
       } catch {
         setError('Failed to load Pokémon');
+
         setPokemon(null);
       } finally {
         setLoading(false);
@@ -45,43 +55,49 @@ export const PokemonDetails = () => {
     fetchPokemon();
   }, [id]);
 
+  const handleClose = () => {
+    navigate(`/?page=${searchParams.get('page') || '1'}`);
+  };
+
   return (
-    <aside
-      className="w-[350px] border-l border-primary/10 p-6 space-y-6 sticky top-0 h-screen overflow-y-auto"
-    >
-      <div className="flex items-center justify-between">
-        <h2 className="text-xl font-bold">Details</h2>
+    <>
+      <div onClick={handleClose} className="fixed inset-0 bg-black/30 backdrop-blur-md" />
 
-        <Link
-          to={`/?page=${searchParams.get('page') || '1'}`}
-          className="text-sm text-primary underline"
-        >
-          Close
-        </Link>
-      </div>
+      <aside
+        className="fixed right-0 top-0 z-50 h-screen w-[350px] bg-background border-l border-primary/10 p-6 overflow-y-auto"
+      >
+        <div className="flex items-center justify-between">
+          <h2 className="text-xl font-bold">Details</h2>
 
-      {loading && <Spinner />}
-      {error && <p className="text-red-500">{error}</p>}
+          <button onClick={handleClose} className="text-sm underline">
+            Close
+          </button>
+        </div>
 
-      {!loading && !error && pokemon && (
-        <>
-          <div className="flex justify-center">
-            <img src={pokemon.image} alt={pokemon.name} className="w-32 h-32" />
-          </div>
+        {loading && <Spinner />}
 
-          <h3 className="text-lg font-bold capitalize text-center">{pokemon.name}</h3>
+        {error && <p className="text-red-500">{error}</p>}
 
-          <p>ID: {pokemon.id}</p>
+        {!loading && !error && pokemon && (
+          <>
+            <div className="flex justify-center">
+              <img src={pokemon.image} alt={pokemon.name} className="w-32 h-32" />
+            </div>
 
-          <p>
-            Height: {pokemon.height} | Weight: {pokemon.weight}
-          </p>
+            <h3 className="text-lg font-bold capitalize text-center">{pokemon.name}</h3>
 
-          <p>Types: {pokemon.types.join(', ')}</p>
+            <p>ID: {pokemon.id}</p>
 
-          <p>Abilities: {pokemon.abilities.join(', ')}</p>
-        </>
-      )}
-    </aside>
+            <p>
+              Height: {pokemon.height} | Weight: {pokemon.weight}
+            </p>
+
+            <p>Types: {pokemon.types.join(', ')}</p>
+
+            <p>Abilities: {pokemon.abilities.join(', ')}</p>
+          </>
+        )}
+      </aside>
+    </>
   );
 };

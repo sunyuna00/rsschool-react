@@ -15,7 +15,7 @@ export const ResultsList = ({ results }: Props) => {
       {results.map((pokemon) => (
         <Link
           key={pokemon.id}
-          to={`/?page=${page}&details=${pokemon.id}`}
+          to={`/pokemon/${pokemon.id}?page=${page}`}
           className="transition-transform hover:scale-[1.01]"
         >
           <Card item={pokemon} />
