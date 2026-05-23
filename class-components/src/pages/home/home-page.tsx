@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { fetchPokemon } from '@/api/fetchPokemon';
 import type { Pokemon } from '@/types';
-import { SearchBar, ResultsList } from '@/components';
-import { Spinner } from '@/components/spinner';
-import { Outlet } from 'react-router-dom';
+import { SearchBar, ResultsList, Spinner, Pagination } from '@/components';
+import { Outlet, useSearchParams } from 'react-router-dom';
 
 type Props = {
   initialSearch: string;
@@ -23,12 +22,15 @@ export const HomePage: React.FC<Props> = ({ initialSearch }) => {
   const [error, setError] = useState<string | null>(null);
   const [hasSearched, setHasSearched] = useState(false);
   const [triggerError, setTriggerError] = useState(false);
+  const [searchParams, setSearchParams] = useSearchParams();
 
-  const [page] = useState(1);
+  const page = Number(searchParams.get('page')) || 1;
   const ITEMS_PER_PAGE = 20;
-
   const startIndex = (page - 1) * ITEMS_PER_PAGE;
+
   const visibleResults = results.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+
+  const totalPages = Math.ceil(results.length / ITEMS_PER_PAGE);
 
   if (triggerError) {
     throw new Error('Test Error Boundary');
@@ -55,17 +57,36 @@ export const HomePage: React.FC<Props> = ({ initialSearch }) => {
     load();
   }, [query]);
 
+  const handlePageChange = (newPage: number) => {
+    searchParams.set('page', String(newPage));
+
+    setSearchParams(searchParams);
+  };
+
   return (
     <div className="min-h-screen flex flex-col">
       <section className="p-6 border-b border-primary/10">
-        <SearchBar onSearch={setQuery} initialValue={query} />
+        <SearchBar
+          initialValue={query}
+          onSearch={(value) => {
+            setQuery(value);
+            searchParams.set('page', '1');
+            setSearchParams(searchParams);
+          }}
+        />
       </section>
 
       <div className="flex flex-1">
         <section className="flex-1 p-6">
           {loading && <Spinner data-testid="spinner" />}
 
-          {!loading && !error && results.length > 0 && <ResultsList results={visibleResults} />}
+          {!loading && !error && results.length > 0 && (
+            <>
+              <ResultsList results={visibleResults} />
+
+              <Pagination page={page} totalPages={totalPages} onPageChange={handlePageChange} />
+            </>
+          )}
 
           {!loading && !error && results.length === 0 && hasSearched && <p>No results found</p>}
 
