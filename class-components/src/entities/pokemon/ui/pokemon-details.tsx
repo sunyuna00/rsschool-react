@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import type { Pokemon } from '../model/types';
+import { Spinner } from '@/shared';
 
 export const PokemonDetails = () => {
   const [pokemon, setPokemon] = useState<Pokemon | null>(null);
@@ -45,7 +46,9 @@ export const PokemonDetails = () => {
   }, [id]);
 
   return (
-    <aside className="w-[350px] border-l border-primary/10 p-6 space-y-6">
+    <aside
+      className="w-[350px] border-l border-primary/10 p-6 space-y-6 sticky top-0 h-screen overflow-y-auto"
+    >
       <div className="flex items-center justify-between">
         <h2 className="text-xl font-bold">Details</h2>
 
@@ -57,7 +60,7 @@ export const PokemonDetails = () => {
         </Link>
       </div>
 
-      {loading && <p>Loading...</p>}
+      {loading && <Spinner />}
       {error && <p className="text-red-500">{error}</p>}
 
       {!loading && !error && pokemon && (
@@ -66,9 +69,7 @@ export const PokemonDetails = () => {
             <img src={pokemon.image} alt={pokemon.name} className="w-32 h-32" />
           </div>
 
-          <h3 className="text-lg font-bold capitalize text-center">
-            {pokemon.name}
-          </h3>
+          <h3 className="text-lg font-bold capitalize text-center">{pokemon.name}</h3>
 
           <p>ID: {pokemon.id}</p>
 
@@ -78,8 +79,7 @@ export const PokemonDetails = () => {
 
           <p>Types: {pokemon.types.join(', ')}</p>
 
-          <p>Abilities: {pokemon.abilities.join(', ')}
-          </p>
+          <p>Abilities: {pokemon.abilities.join(', ')}</p>
         </>
       )}
     </aside>

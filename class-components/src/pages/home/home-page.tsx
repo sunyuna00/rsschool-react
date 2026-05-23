@@ -23,10 +23,7 @@ export const HomePage: React.FC<Props> = ({ initialSearch }) => {
   const ITEMS_PER_PAGE = 20;
   const startIndex = (page - 1) * ITEMS_PER_PAGE;
 
-  const visibleResults = results.slice(
-    startIndex,
-    startIndex + ITEMS_PER_PAGE
-  );
+  const visibleResults = results.slice(startIndex, startIndex + ITEMS_PER_PAGE);
 
   const totalPages = Math.ceil(results.length / ITEMS_PER_PAGE);
 
@@ -95,17 +92,11 @@ export const HomePage: React.FC<Props> = ({ initialSearch }) => {
             <>
               <ResultsList results={visibleResults} />
 
-              <Pagination
-                page={page}
-                totalPages={totalPages}
-                onPageChange={handlePageChange}
-              />
+              <Pagination page={page} totalPages={totalPages} onPageChange={handlePageChange} />
             </>
           )}
 
-          {!loading && !error && results.length === 0 && hasSearched && (
-            <p>No results found</p>
-          )}
+          {!loading && !error && results.length === 0 && hasSearched && <p>No results found</p>}
 
           {!loading && error && <p>{error}</p>}
 
@@ -119,7 +110,9 @@ export const HomePage: React.FC<Props> = ({ initialSearch }) => {
           </div>
         </section>
 
-        <PokemonDetails />
+        <div className="shrink-0">
+          <PokemonDetails />
+        </div>
       </div>
     </div>
   );
