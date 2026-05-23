@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Search } from 'lucide-react';
 
 type Props = {
@@ -11,6 +11,11 @@ export const SearchBar: React.FC<Props> = ({
   initialValue = '',
 }) => {
   const [input, setInput] = useState(initialValue);
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setInput(initialValue ?? '');
+  }, [initialValue]);
 
   const handleSubmit = () => {
     onSearch(input.trim());
