@@ -1,6 +1,6 @@
 import { Routes, Route } from 'react-router-dom';
 import { AboutPage, HomePageContainer, NotFoundPage, PokemonDetails } from './pages';
-import { AppLayout } from './components/layout/app-layout';
+import { AppLayout } from './components';
 
 export const App = () => {
   return (

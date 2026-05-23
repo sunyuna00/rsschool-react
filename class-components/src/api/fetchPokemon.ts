@@ -31,19 +31,7 @@ export const fetchPokemon = async (search: string): Promise<Pokemon[]> => {
   const query = search.trim().toLowerCase();
 
   try {
-    if (query) {
-      const res = await fetch(`${API_URL}/${query}`);
-
-      if (!res.ok) {
-        throw new Error(API_ERRORS.NOT_FOUND);
-      }
-
-      const data: PokemonRaw = await res.json();
-
-      return [mapPokemon(data)];
-    }
-
-    const res = await fetch(`${API_URL}?limit=20&offset=0`);
+    const res = await fetch(`${API_URL}?limit=1300`);
 
     if (!res.ok) {
       throw new Error(API_ERRORS.FAILED);
@@ -51,8 +39,16 @@ export const fetchPokemon = async (search: string): Promise<Pokemon[]> => {
 
     const data = await res.json();
 
+    const filtered = data.results.filter((item: { name: string }) =>
+      item.name.includes(query)
+    );
+
+    if (!filtered.length) {
+      throw new Error(API_ERRORS.NOT_FOUND);
+    }
+
     const detailed: PokemonRaw[] = await Promise.all(
-      data.results.map(async (item: { url: string }) => {
+      filtered.map(async (item: { url: string }) => {
         const res = await fetch(item.url);
         return res.json();
       })

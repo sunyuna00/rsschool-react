@@ -74,7 +74,7 @@ export const HomePage: React.FC<Props> = ({ initialSearch }) => {
           <div className="flex justify-center mt-6">
             <button
               onClick={() => setTriggerError(true)}
-              className="px-10 py-4 mb-8 mt-2 text-sm rounded-full bg-primary/10 text-primary border border-primary/20"
+              className="cursor-pointer px-10 py-4 mb-8 mt-2 text-sm rounded-full bg-primary/10 text-primary border border-primary/20"
             >
               Test Error
             </button>

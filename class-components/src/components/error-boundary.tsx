@@ -41,7 +41,7 @@ export class ErrorBoundary extends React.Component<{ children: React.ReactNode }
               onClick={this.resetError}
               className="w-full px-5 py-3 rounded-2xl bg-primary/10 text-primary border border-primary/20
                          transition-all duration-200 hover:scale-[1.02] hover:bg-primary/15 hover:border-primary/30
-                         active:scale-95"
+                         active:scale-95 cursor-pointer"
             >
               Try again
             </button>

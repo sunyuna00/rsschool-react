@@ -4,14 +4,26 @@ export const AboutPage = () => {
       <h1 className="text-3xl font-bold">About</h1>
 
       <p className="text-gray-700">
-        Pokémon Search Application built with React. The project is focused on
-        learning routing, hooks, and working with API data in a single-page application.
+        Pokémon Search Application built with React. The project is focused on learning routing,
+        hooks, and working with API data in a single-page application.
       </p>
 
       <p className="text-gray-700">
-        It includes search, pagination, and a details view for each Pokémon,
-        using data from PokéAPI.
+        It includes search, pagination, and a details view for each Pokémon, using data from
+        PokéAPI.
       </p>
+
+      <div className="space-y-1">
+        <span className="text-md font-semibold">Author: </span>
+        <a
+          href="https://github.com/sunyuna00"
+          target="_blank"
+          rel="noreferrer"
+          className="text-primary underline hover:opacity-80 transition"
+        >
+          sunyuna00
+        </a>
+      </div>
 
       <div className="pt-2">
         <a
