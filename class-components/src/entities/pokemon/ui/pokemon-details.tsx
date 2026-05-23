@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import type { Pokemon } from '@/types';
+import type { Pokemon } from '../model/types';
 
 export const PokemonDetails = () => {
   const { id } = useParams();

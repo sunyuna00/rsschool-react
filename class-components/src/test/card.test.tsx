@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import { Card } from '../card';
+import { Card } from '@/entities';
 
 describe('Card component', () => {
   const mockPokemon = {
@@ -27,7 +27,7 @@ describe('Card component', () => {
     render(<Card item={mockPokemon} />);
 
     const badge = screen.getByText(/electric/i, {
-    selector: 'span',
+      selector: 'span',
     });
 
     expect(badge).toBeInTheDocument();

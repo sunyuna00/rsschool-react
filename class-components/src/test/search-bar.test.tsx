@@ -2,19 +2,15 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, test, expect, vi } from 'vitest';
 
-import { SearchBar } from '../search-bar';
+import { SearchBar } from '@/widgets';
 
 describe('SearchBar component', () => {
   test('renders input and button', () => {
     render(<SearchBar onSearch={() => {}} />);
 
-    expect(
-      screen.getByPlaceholderText(/search pokémon/i)
-    ).toBeInTheDocument();
+    expect(screen.getByPlaceholderText(/search pokémon/i)).toBeInTheDocument();
 
-    expect(
-      screen.getByRole('button', { name: /search/i })
-    ).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /search/i })).toBeInTheDocument();
   });
 
   test('updates input value when user types', async () => {
@@ -40,9 +36,7 @@ describe('SearchBar component', () => {
 
     await user.type(input, 'charizard');
 
-    await user.click(
-      screen.getByRole('button', { name: /search/i })
-    );
+    await user.click(screen.getByRole('button', { name: /search/i }));
 
     expect(onSearchMock).toHaveBeenCalledTimes(1);
 
@@ -60,9 +54,7 @@ describe('SearchBar component', () => {
 
     await user.type(input, '  bulbasaur  ');
 
-    await user.click(
-      screen.getByRole('button', { name: /search/i })
-    );
+    await user.click(screen.getByRole('button', { name: /search/i }));
 
     expect(onSearchMock).toHaveBeenCalledWith('bulbasaur');
   });
@@ -82,38 +74,19 @@ describe('SearchBar component', () => {
   });
 
   test('renders initialValue', () => {
-    render(
-      <SearchBar
-        onSearch={() => {}}
-        initialValue="mew"
-      />
-    );
+    render(<SearchBar onSearch={() => {}} initialValue="mew" />);
 
-    expect(
-      screen.getByPlaceholderText(/search pokémon/i)
-    ).toHaveValue('mew');
+    expect(screen.getByPlaceholderText(/search pokémon/i)).toHaveValue('mew');
   });
 
   test('updates input when initialValue changes', () => {
-    const { rerender } = render(
-      <SearchBar
-        onSearch={() => {}}
-        initialValue="mew"
-      />
-    );
+    const { rerender } = render(<SearchBar onSearch={() => {}} initialValue="mew" />);
 
-    const input = screen.getByPlaceholderText(
-      /search pokémon/i
-    );
+    const input = screen.getByPlaceholderText(/search pokémon/i);
 
     expect(input).toHaveValue('mew');
 
-    rerender(
-      <SearchBar
-        onSearch={() => {}}
-        initialValue="mewtwo"
-      />
-    );
+    rerender(<SearchBar onSearch={() => {}} initialValue="mewtwo" />);
 
     expect(input).toHaveValue('mewtwo');
   });
@@ -121,8 +94,6 @@ describe('SearchBar component', () => {
   test('renders empty input if initialValue is not provided', () => {
     render(<SearchBar onSearch={() => {}} />);
 
-    expect(
-      screen.getByPlaceholderText(/search pokémon/i)
-    ).toHaveValue('');
+    expect(screen.getByPlaceholderText(/search pokémon/i)).toHaveValue('');
   });
 });

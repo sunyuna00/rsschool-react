@@ -1,7 +1,7 @@
 import { cleanup, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, test, expect, vi, afterEach } from 'vitest';
-import { ErrorBoundary } from '../error-boundary';
+import { ErrorBoundary } from '@/app';
 
 describe('ErrorBoundary', () => {
   const ProblemComponent = () => {
@@ -24,7 +24,6 @@ describe('ErrorBoundary', () => {
   });
 
   test('renders fallback UI when error happens', () => {
-
     vi.spyOn(console, 'error').mockImplementation(() => {});
 
     render(
@@ -33,13 +32,9 @@ describe('ErrorBoundary', () => {
       </ErrorBoundary>
     );
 
-    expect(
-      screen.getByText(/something went wrong/i)
-    ).toBeInTheDocument();
+    expect(screen.getByText(/something went wrong/i)).toBeInTheDocument();
 
-    expect(
-      screen.getByRole('button', { name: /try again/i })
-    ).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /try again/i })).toBeInTheDocument();
 
     vi.restoreAllMocks();
   });
@@ -75,9 +70,7 @@ describe('ErrorBoundary', () => {
 
     await user.click(button);
 
-    expect(
-      screen.getByText(/something went wrong/i)
-    ).toBeInTheDocument();
+    expect(screen.getByText(/something went wrong/i)).toBeInTheDocument();
 
     vi.restoreAllMocks();
   });

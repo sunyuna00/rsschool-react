@@ -1,4 +1,4 @@
-import type { Pokemon } from '@/types';
+import type { Pokemon } from '../model/types';
 
 export const Card = ({ item }: { item: Pokemon }) => {
   return (

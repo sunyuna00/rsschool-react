@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import { describe, test, expect } from 'vitest';
-import { ResultsList } from '../results-list';
+import { ResultsList } from '@/widgets';
 import { MemoryRouter } from 'react-router-dom';
 
 describe('ResultsList component', () => {

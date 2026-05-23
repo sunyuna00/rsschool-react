@@ -1,9 +1,8 @@
+import { fetchPokemon, type Pokemon } from '@/entities';
+import { Spinner, useLocalStorage } from '@/shared';
+import { Pagination, ResultsList, SearchBar } from '@/widgets';
 import React, { useEffect, useState } from 'react';
-import { fetchPokemon } from '@/api/fetchPokemon';
-import type { Pokemon } from '@/types';
-import { SearchBar, ResultsList, Spinner, Pagination } from '@/components';
 import { Outlet, useSearchParams } from 'react-router-dom';
-import { useLocalStorage } from '@/hooks/use-local-storage';
 
 type Props = {
   initialSearch: string;

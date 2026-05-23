@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, afterEach, beforeEach } from 'vitest';
-import { fetchPokemon } from './fetchPokemon';
+import { fetchPokemon } from '@/entities';
 
 describe('fetchPokemon', () => {
   beforeEach(() => {
@@ -27,9 +27,7 @@ describe('fetchPokemon', () => {
 
     expect(result).toHaveLength(1);
     expect(result[0]?.name).toBe('pikachu');
-    expect(globalThis.fetch).toHaveBeenCalledWith(
-      expect.stringContaining('/pikachu')
-    );
+    expect(globalThis.fetch).toHaveBeenCalledWith(expect.stringContaining('/pikachu'));
   });
 
   it('returns list of pokemons when search is empty', async () => {
@@ -63,15 +61,11 @@ describe('fetchPokemon', () => {
       ok: false,
     } as Response);
 
-    await expect(fetchPokemon('unknown')).rejects.toThrow(
-      'Pokemon not found'
-    );
+    await expect(fetchPokemon('unknown')).rejects.toThrow('Pokemon not found');
   });
 
   it('throws error on network failure', async () => {
-    vi.spyOn(globalThis, 'fetch').mockRejectedValueOnce(
-      new Error('Network error')
-    );
+    vi.spyOn(globalThis, 'fetch').mockRejectedValueOnce(new Error('Network error'));
 
     await expect(fetchPokemon('pikachu')).rejects.toThrow();
   });
@@ -91,9 +85,7 @@ describe('fetchPokemon', () => {
 
     await fetchPokemon('   PIKACHU   ');
 
-    expect(globalThis.fetch).toHaveBeenCalledWith(
-      expect.stringContaining('/pikachu')
-    );
+    expect(globalThis.fetch).toHaveBeenCalledWith(expect.stringContaining('/pikachu'));
   });
 
   it('handles empty sprites safely', async () => {

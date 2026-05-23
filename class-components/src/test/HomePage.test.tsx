@@ -2,9 +2,8 @@ import { render, screen, waitFor } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
-import { App } from '../../App';
-import { fetchPokemon } from '@/api/fetchPokemon';
-import { ErrorBoundary } from '@/components';
+import { fetchPokemon } from '@/entities';
+import { ErrorBoundary, App } from '@/app';
 
 vi.mock('@/api/fetchPokemon');
 

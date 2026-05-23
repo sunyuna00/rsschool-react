@@ -1,12 +1,14 @@
 import { Routes, Route } from 'react-router-dom';
-import { AboutPage, HomePageContainer, NotFoundPage, PokemonDetails } from './pages';
-import { AppLayout } from './components';
+import { AppLayout } from '../layouts';
+import { AboutPage, HomePageContainer, NotFoundPage } from '@/pages';
+import { PokemonDetails } from '@/entities';
+
 
 export const App = () => {
   return (
     <Routes>
       <Route path="/" element={<AppLayout />}>
-        <Route path='/' element={<HomePageContainer />}>
+        <Route path="/" element={<HomePageContainer />}>
           <Route path="details/:id" element={<PokemonDetails />} />
         </Route>
 
