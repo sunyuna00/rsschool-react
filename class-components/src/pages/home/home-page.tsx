@@ -3,20 +3,14 @@ import { fetchPokemon } from '@/api/fetchPokemon';
 import type { Pokemon } from '@/types';
 import { SearchBar, ResultsList, Spinner, Pagination } from '@/components';
 import { Outlet, useSearchParams } from 'react-router-dom';
+import { useLocalStorage } from '@/hooks/use-local-storage';
 
 type Props = {
   initialSearch: string;
 };
 
 export const HomePage: React.FC<Props> = ({ initialSearch }) => {
-  const [query, setQuery] = useState<string>(() => {
-    if (typeof window === 'undefined') {
-      return initialSearch ?? '';
-    }
-
-    const saved = localStorage.getItem('search');
-    return saved ?? initialSearch ?? '';
-  });
+  const [query, setQuery] = useLocalStorage('search', initialSearch ?? '');
   const [results, setResults] = useState<Pokemon[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
