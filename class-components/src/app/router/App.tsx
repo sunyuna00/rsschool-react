@@ -1,19 +1,13 @@
 import { Routes, Route } from 'react-router-dom';
 import { AppLayout } from '../layouts';
 import { AboutPage, HomePageContainer, NotFoundPage } from '@/pages';
-import { PokemonDetails } from '@/entities';
-
 
 export const App = () => {
   return (
     <Routes>
       <Route path="/" element={<AppLayout />}>
-        <Route path="/" element={<HomePageContainer />}>
-          <Route path="details/:id" element={<PokemonDetails />} />
-        </Route>
-
+        <Route index element={<HomePageContainer />} />
         <Route path="about" element={<AboutPage />} />
-
         <Route path="*" element={<NotFoundPage />} />
       </Route>
     </Routes>

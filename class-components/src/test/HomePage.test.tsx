@@ -5,7 +5,7 @@ import { MemoryRouter } from 'react-router-dom';
 import { fetchPokemon } from '@/entities';
 import { ErrorBoundary, App } from '@/app';
 
-vi.mock('@/api/fetchPokemon');
+vi.mock('@/entities');
 
 const mockedFetchPokemon = vi.mocked(fetchPokemon);
 

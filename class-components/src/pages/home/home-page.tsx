@@ -1,8 +1,8 @@
-import { fetchPokemon, type Pokemon } from '@/entities';
+import { fetchPokemon, PokemonDetails, type Pokemon } from '@/entities';
 import { Spinner, useLocalStorage } from '@/shared';
 import { Pagination, ResultsList, SearchBar } from '@/widgets';
 import React, { useEffect, useState } from 'react';
-import { Outlet, useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 
 type Props = {
   initialSearch: string;
@@ -15,13 +15,18 @@ export const HomePage: React.FC<Props> = ({ initialSearch }) => {
   const [error, setError] = useState<string | null>(null);
   const [hasSearched, setHasSearched] = useState(false);
   const [triggerError, setTriggerError] = useState(false);
+
   const [searchParams, setSearchParams] = useSearchParams();
 
   const page = Number(searchParams.get('page')) || 1;
+
   const ITEMS_PER_PAGE = 20;
   const startIndex = (page - 1) * ITEMS_PER_PAGE;
 
-  const visibleResults = results.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+  const visibleResults = results.slice(
+    startIndex,
+    startIndex + ITEMS_PER_PAGE
+  );
 
   const totalPages = Math.ceil(results.length / ITEMS_PER_PAGE);
 
@@ -50,10 +55,20 @@ export const HomePage: React.FC<Props> = ({ initialSearch }) => {
     load();
   }, [query]);
 
-  const handlePageChange = (newPage: number) => {
-    searchParams.set('page', String(newPage));
+  const updateParams = (updates: Record<string, string>) => {
+    setSearchParams((prev) => {
+      const params = new URLSearchParams(prev);
 
-    setSearchParams(searchParams);
+      Object.entries(updates).forEach(([key, value]) => {
+        params.set(key, value);
+      });
+
+      return params;
+    });
+  };
+
+  const handlePageChange = (newPage: number) => {
+    updateParams({ page: String(newPage) });
   };
 
   return (
@@ -63,8 +78,11 @@ export const HomePage: React.FC<Props> = ({ initialSearch }) => {
           initialValue={query}
           onSearch={(value) => {
             setQuery(value);
-            searchParams.set('page', '1');
-            setSearchParams(searchParams);
+
+            updateParams({
+              page: '1',
+              details: '',
+            });
           }}
         />
       </section>
@@ -77,11 +95,17 @@ export const HomePage: React.FC<Props> = ({ initialSearch }) => {
             <>
               <ResultsList results={visibleResults} />
 
-              <Pagination page={page} totalPages={totalPages} onPageChange={handlePageChange} />
+              <Pagination
+                page={page}
+                totalPages={totalPages}
+                onPageChange={handlePageChange}
+              />
             </>
           )}
 
-          {!loading && !error && results.length === 0 && hasSearched && <p>No results found</p>}
+          {!loading && !error && results.length === 0 && hasSearched && (
+            <p>No results found</p>
+          )}
 
           {!loading && error && <p>{error}</p>}
 
@@ -95,7 +119,7 @@ export const HomePage: React.FC<Props> = ({ initialSearch }) => {
           </div>
         </section>
 
-        <Outlet />
+        <PokemonDetails />
       </div>
     </div>
   );

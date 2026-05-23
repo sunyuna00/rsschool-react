@@ -1,13 +1,15 @@
 import { useEffect, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import type { Pokemon } from '../model/types';
 
 export const PokemonDetails = () => {
-  const { id } = useParams();
-
   const [pokemon, setPokemon] = useState<Pokemon | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  const [searchParams] = useSearchParams();
+
+  const id = searchParams.get('details');
 
   useEffect(() => {
     const fetchPokemon = async () => {
@@ -27,9 +29,7 @@ export const PokemonDetails = () => {
           types: data.types.map((t: { type: { name: string } }) => t.type.name),
           weight: data.weight,
           height: data.height,
-          abilities: data.abilities.map((a: { ability: { name: string } }) =>
-            typeof a === 'object' && a !== null ? a.ability.name : ''
-          ),
+          abilities: data.abilities.map((a: { ability: { name: string } }) => a.ability.name),
         };
 
         setPokemon(formatted);
@@ -49,13 +49,15 @@ export const PokemonDetails = () => {
       <div className="flex items-center justify-between">
         <h2 className="text-xl font-bold">Details</h2>
 
-        <Link to="/" className="text-sm text-primary underline">
+        <Link
+          to={`/?page=${searchParams.get('page') || '1'}`}
+          className="text-sm text-primary underline"
+        >
           Close
         </Link>
       </div>
 
       {loading && <p>Loading...</p>}
-
       {error && <p className="text-red-500">{error}</p>}
 
       {!loading && !error && pokemon && (
@@ -64,7 +66,9 @@ export const PokemonDetails = () => {
             <img src={pokemon.image} alt={pokemon.name} className="w-32 h-32" />
           </div>
 
-          <h3 className="text-lg font-bold capitalize text-center">{pokemon.name}</h3>
+          <h3 className="text-lg font-bold capitalize text-center">
+            {pokemon.name}
+          </h3>
 
           <p>ID: {pokemon.id}</p>
 
@@ -74,7 +78,8 @@ export const PokemonDetails = () => {
 
           <p>Types: {pokemon.types.join(', ')}</p>
 
-          <p>Abilities: {pokemon.abilities.join(', ')}</p>
+          <p>Abilities: {pokemon.abilities.join(', ')}
+          </p>
         </>
       )}
     </aside>
