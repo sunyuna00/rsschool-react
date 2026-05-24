@@ -1,7 +1,8 @@
 import { createRoot } from 'react-dom/client';
-import './index.css';
-import { App } from './app/App';
-import { ErrorBoundary } from './components';
+import { BrowserRouter } from 'react-router-dom';
+import { ErrorBoundary } from './app/error-boundary';
+import { App } from './app/router/App';
+import '@/app'
 
 const rootElement = document.getElementById('root');
 
@@ -10,7 +11,9 @@ if (!rootElement) {
 }
 
 createRoot(rootElement).render(
-  <ErrorBoundary>
-    <App />
-  </ErrorBoundary>
+  <BrowserRouter>
+    <ErrorBoundary>
+      <App />
+    </ErrorBoundary>
+  </BrowserRouter>
 );

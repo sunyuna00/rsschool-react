@@ -1,0 +1,26 @@
+import { Card, type Pokemon } from '@/entities/pokemon';
+import { Link, useSearchParams } from 'react-router-dom';
+
+type Props = {
+  results: Pokemon[];
+};
+
+export const ResultsList = ({ results }: Props) => {
+  const [searchParams] = useSearchParams();
+
+  const page = searchParams.get('page') || '1';
+
+  return (
+    <section className="flex flex-col gap-5 py-8">
+      {results.map((pokemon) => (
+        <Link
+          key={pokemon.id}
+          to={`/pokemon/${pokemon.id}?page=${page}`}
+          className="transition-transform hover:scale-[1.01]"
+        >
+          <Card item={pokemon} />
+        </Link>
+      ))}
+    </section>
+  );
+};
