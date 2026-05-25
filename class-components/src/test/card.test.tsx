@@ -1,5 +1,6 @@
-import { render, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import { Card } from '@/entities';
+import { renderWithProviders } from './render-with-providers';
 
 describe('Card component', () => {
   const mockPokemon = {
@@ -13,7 +14,7 @@ describe('Card component', () => {
   };
 
   test('renders pokemon name and image', () => {
-    render(<Card item={mockPokemon} />);
+    renderWithProviders(<Card item={mockPokemon} />);
 
     const nameElement = screen.getByText(/pikachu/i);
     const imageElement = screen.getByRole('img', { name: /pikachu/i });
@@ -24,7 +25,7 @@ describe('Card component', () => {
   });
 
   test('renders pokemon types and abilities', () => {
-    render(<Card item={mockPokemon} />);
+    renderWithProviders(<Card item={mockPokemon} />);
 
     const badge = screen.getByText(/electric/i, {
       selector: 'span',
@@ -35,7 +36,7 @@ describe('Card component', () => {
   });
 
   test('renders pokemon height and weight', () => {
-    render(<Card item={mockPokemon} />);
+    renderWithProviders(<Card item={mockPokemon} />);
 
     expect(screen.getByText(/height:/i)).toBeInTheDocument();
     expect(screen.getByText('4')).toBeInTheDocument();
@@ -49,7 +50,7 @@ describe('Card component', () => {
       ...mockPokemon,
       types: ['electric', 'steel'],
     };
-    render(<Card item={pokemon} />);
+    renderWithProviders(<Card item={pokemon} />);
     const types = screen.getAllByText(/electric/i);
     expect(types.length).toBeGreaterThan(0);
 

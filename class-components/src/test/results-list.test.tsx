@@ -1,7 +1,7 @@
-import { render, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import { describe, test, expect } from 'vitest';
 import { ResultsList } from '@/widgets';
-import { MemoryRouter } from 'react-router-dom';
+import { renderWithProviders } from './render-with-providers';
 
 describe('ResultsList component', () => {
   const mockResults = [
@@ -26,10 +26,8 @@ describe('ResultsList component', () => {
   ];
 
   test('renders all pokemon cards', () => {
-    render(
-      <MemoryRouter>
+    renderWithProviders(
         <ResultsList results={mockResults} />
-      </MemoryRouter>
     );
 
     expect(screen.getByText(/pikachu/i)).toBeInTheDocument();
@@ -37,10 +35,8 @@ describe('ResultsList component', () => {
   });
 
   test('renders correct number of pokemon images', () => {
-    render(
-      <MemoryRouter>
+    renderWithProviders(
         <ResultsList results={mockResults} />
-      </MemoryRouter>
     );
 
     const pikachuImage = screen.getByRole('img', { name: /pikachu/i });
@@ -51,10 +47,8 @@ describe('ResultsList component', () => {
   });
 
   test('renders empty list correctly', () => {
-    render(
-      <MemoryRouter>
+    renderWithProviders(
         <ResultsList results={[]} />
-      </MemoryRouter>
     );
 
     expect(screen.queryByRole('img')).not.toBeInTheDocument();
