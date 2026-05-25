@@ -67,7 +67,7 @@ export const Card = ({ item }: Props) => {
           >
             <Check
               className={`
-    w-4 h-4 text-white transition-all duration-300
+    w-4 h-4 text-foreground transition-all duration-300
     ${isSelected ? 'opacity-100 scale-100' : 'opacity-0 scale-50'}
   `}
               strokeWidth={3.5}
