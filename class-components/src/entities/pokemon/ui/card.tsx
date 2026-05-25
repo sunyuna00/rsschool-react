@@ -24,12 +24,7 @@ export const Card = ({ item }: Props) => {
   };
 
   const handleCheckboxChange = () => {
-    dispatch(
-      toggleItem({
-        id: item.id,
-        name: item.name,
-      })
-    );
+    dispatch(toggleItem(item));
   };
 
   return (

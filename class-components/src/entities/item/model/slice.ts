@@ -1,12 +1,8 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
-
-type Item = {
-  id: number;
-  name: string;
-};
+import type { Pokemon } from '@/entities';
 
 type SelectedItemsState = {
-  items: Item[];
+  items: Pokemon[];
 };
 
 const initialState: SelectedItemsState = {
@@ -19,7 +15,7 @@ const selectedItemsSlice = createSlice({
   initialState,
 
   reducers: {
-    toggleItem(state, action: PayloadAction<Item>) {
+    toggleItem(state, action: PayloadAction<Pokemon>) {
       const exists = state.items.find(
         (item) => item.id === action.payload.id
       );

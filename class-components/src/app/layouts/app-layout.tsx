@@ -1,6 +1,7 @@
 import { Outlet } from 'react-router-dom';
 
 import { Navigation } from '../../widgets/navigation';
+import { Flyout } from '@/widgets';
 
 export const AppLayout = () => {
   return (
@@ -10,6 +11,7 @@ export const AppLayout = () => {
       <main>
         <Outlet />
       </main>
+      <Flyout />
     </div>
   );
 };
