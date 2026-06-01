@@ -1,64 +1,22 @@
 import { Spinner } from '@/shared';
-
-import { useEffect, useState } from 'react';
-
+import { useGetPokemonByIdQuery } from '@/shared';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import styles from './pokemon-details.module.css';
-import type { Pokemon } from '../../model/types';
 
 export const PokemonDetails = () => {
-  const [pokemon, setPokemon] = useState<Pokemon | null>(null);
-
-  const [loading, setLoading] = useState(false);
-
-  const [error, setError] = useState<string | null>(null);
-
   const { id } = useParams();
+
+  const {
+    data: pokemon,
+    isLoading: loading,
+    error,
+  } = useGetPokemonByIdQuery(id ?? '', {
+    skip: !id,
+  });
 
   const navigate = useNavigate();
 
   const [searchParams] = useSearchParams();
-
-  useEffect(() => {
-    const fetchPokemon = async () => {
-      if (!id) return;
-
-      setLoading(true);
-
-      setError(null);
-
-      try {
-        const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`);
-
-        const data = await res.json();
-
-        const formatted = {
-          id: data.id,
-          name: data.name,
-
-          image: data.sprites.other['official-artwork'].front_default,
-
-          types: data.types.map((t: { type: { name: string } }) => t.type.name),
-
-          weight: data.weight,
-
-          height: data.height,
-
-          abilities: data.abilities.map((a: { ability: { name: string } }) => a.ability.name),
-        } as Pokemon;
-
-        setPokemon(formatted);
-      } catch {
-        setError('Failed to load Pokémon');
-
-        setPokemon(null);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchPokemon();
-  }, [id]);
 
   const handleClose = () => {
     navigate(`/?page=${searchParams.get('page') || '1'}`);
@@ -79,7 +37,7 @@ export const PokemonDetails = () => {
 
         {loading && <Spinner />}
 
-        {error && <p className="text-red-500">{error}</p>}
+        {error && <p className="text-red-500">Failed to load Pokémon</p>}
 
         {!loading && !error && pokemon && (
           <>

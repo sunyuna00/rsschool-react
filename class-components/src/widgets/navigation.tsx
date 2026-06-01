@@ -1,4 +1,4 @@
-import { ThemeSwitcher } from '@/features';
+import { RefreshButton, ThemeSwitcher } from '@/features';
 import { NavLink } from 'react-router-dom';
 import { House, Info } from 'lucide-react';
 
@@ -60,7 +60,10 @@ export const Navigation = () => {
           </NavLink>
         </div>
 
-        <ThemeSwitcher />
+        <div className="flex items-center gap-3">
+          <ThemeSwitcher />
+          <RefreshButton />
+        </div>
       </nav>
     </header>
   );
