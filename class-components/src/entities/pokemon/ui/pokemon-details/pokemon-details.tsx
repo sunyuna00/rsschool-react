@@ -1,5 +1,5 @@
 import { Spinner } from '@/shared';
-import { useGetPokemonByIdQuery } from '@/shared';
+import { useGetPokemonByIdQuery } from '@/shared/api/pokemon-api';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import styles from './pokemon-details.module.css';
 
