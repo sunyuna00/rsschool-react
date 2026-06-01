@@ -1,4 +1,4 @@
-import { useInvalidatePokemonMutation } from '@/shared';
+import { useInvalidatePokemonMutation } from '@/shared/api/pokemon-api';
 import { RefreshCw } from 'lucide-react';
 
 export const RefreshButton = () => {

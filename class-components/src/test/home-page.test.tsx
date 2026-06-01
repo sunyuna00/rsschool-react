@@ -1,195 +1,62 @@
-import { screen, waitFor } from '@testing-library/react';
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import userEvent from '@testing-library/user-event';
-import { fetchPokemon } from '@/entities';
-import { ErrorBoundary, App } from '@/app';
+import { describe, expect, it, vi, beforeEach } from 'vitest';
+import { screen } from '@testing-library/react';
+import { HomePage } from '@/pages/home/home-page';
 import { renderWithProviders } from './render-with-providers';
 
-vi.mock('@/entities');
+const mockSearchPokemonQuery = vi.hoisted(() => vi.fn());
 
-const mockedFetchPokemon = vi.mocked(fetchPokemon);
+vi.mock('@/shared/api/pokemon-api', async () => {
+  const actual = await vi.importActual<
+    typeof import('@/shared/api/pokemon-api')
+  >('@/shared/api/pokemon-api');
 
-describe('App', () => {
-  const setItemSpy = vi.spyOn(Storage.prototype, 'setItem');
+  return {
+    ...actual,
+    useSearchPokemonQuery: mockSearchPokemonQuery,
+  };
+});
 
+describe('HomePage', () => {
   beforeEach(() => {
-    vi.clearAllMocks();
-    localStorage.clear();
-    setItemSpy.mockClear();
-
-    mockedFetchPokemon.mockResolvedValue([]);
+    mockSearchPokemonQuery.mockReset();
   });
 
-  afterEach(() => {
-    vi.restoreAllMocks();
-  });
-
-  it('calls API on mount with empty search when no localStorage value exists', async () => {
-    renderWithProviders(<App />);
-
-    await waitFor(() => {
-      expect(mockedFetchPokemon).toHaveBeenCalledWith('');
-    });
-  });
-
-  it('loads search from localStorage on mount', async () => {
-    localStorage.setItem('search', 'pikachu');
-
-    renderWithProviders(<App />);
-
-    await waitFor(() => {
-      expect(mockedFetchPokemon).toHaveBeenCalledWith('pikachu');
-    });
-  });
-
-  it('renders results from API', async () => {
-    mockedFetchPokemon.mockResolvedValueOnce([
-      {
-        name: 'pikachu',
-        image: 'img.png',
-        types: ['electric'],
-        weight: 100,
-        height: 10,
-        abilities: ['static'],
-        id: 1,
-      },
-    ]);
-
-    renderWithProviders(<App />);
-
-    expect(await screen.findByText('pikachu')).toBeInTheDocument();
-  });
-
-  it('shows loading spinner while fetching data', async () => {
-    let resolvePromise!: (
-      value: {
-        name: string;
-        image: string;
-        types: string[];
-        weight: number;
-        height: number;
-        abilities: string[];
-        id: number;
-      }[]
-    ) => void;
-
-    const pokemonData = [
-      {
-        name: 'pikachu',
-        image: 'img.png',
-        types: ['electric'],
-        weight: 100,
-        height: 10,
-        abilities: ['static'],
-        id: 1,
-      },
-    ];
-
-    mockedFetchPokemon.mockImplementation(
-      () =>
-        new Promise((resolve) => {
-          resolvePromise = resolve;
-        })
-    );
-
-    const { container } = renderWithProviders(<App />);
-
-    expect(container.querySelector('.animate-spin')).toBeInTheDocument();
-
-    resolvePromise(pokemonData);
-
-    expect(await screen.findByText('pikachu')).toBeInTheDocument();
-  });
-
-  it('handles search interaction', async () => {
-    const user = userEvent.setup();
-
-    mockedFetchPokemon.mockResolvedValueOnce([]).mockResolvedValueOnce([
-      {
-        name: 'charizard',
-        image: 'img.png',
-        types: ['fire'],
-        weight: 90,
-        height: 17,
-        abilities: ['blaze'],
-        id: 1,
-      },
-    ]);
-
-    renderWithProviders(<App />);
-
-    const input = screen.getByRole('textbox');
-    const button = screen.getByRole('button', { name: /search/i });
-
-    await user.type(input, 'charizard');
-    await user.click(button);
-
-    expect(await screen.findByText('charizard')).toBeInTheDocument();
-  });
-
-  it('calls API with entered search value', async () => {
-    const user = userEvent.setup();
-
-    mockedFetchPokemon.mockResolvedValueOnce([]).mockResolvedValueOnce([
-      {
-        name: 'pikachu',
-        image: 'img.png',
-        types: ['electric'],
-        weight: 100,
-        height: 10,
-        abilities: ['static'],
-        id: 1,
-      },
-    ]);
-
-    renderWithProviders(<App />);
-
-    const input = screen.getByRole('textbox');
-    const button = screen.getByRole('button', {
-      name: /search/i,
+  it('shows spinner while loading', () => {
+    mockSearchPokemonQuery.mockReturnValue({
+      isLoading: true,
+      isSuccess: false,
+      data: [],
+      error: null,
     });
 
-    await user.type(input, 'pikachu');
-    await user.click(button);
+    renderWithProviders(<HomePage initialSearch="" />);
 
-    await waitFor(() => {
-      expect(mockedFetchPokemon).toHaveBeenLastCalledWith('pikachu');
-    });
+    expect(screen.getByTestId('spinner')).toBeInTheDocument();
   });
 
-  it('shows error message when API fails', async () => {
-    mockedFetchPokemon.mockRejectedValueOnce(new Error('Something went wrong'));
-
-    renderWithProviders(<App />);
-
-    expect(await screen.findByText('Something went wrong')).toBeInTheDocument();
-  });
-
-  it('shows empty state when no results found', async () => {
-    mockedFetchPokemon.mockResolvedValueOnce([]);
-
-    renderWithProviders(<App />);
-
-    expect(await screen.findByText(/no results found/i)).toBeInTheDocument();
-  });
-
-  it('triggers error boundary from App button', async () => {
-    const user = userEvent.setup();
-
-    vi.spyOn(console, 'error').mockImplementation(() => {});
-
-    renderWithProviders(
-        <ErrorBoundary>
-          <App />
-        </ErrorBoundary>
-    );
-
-    const button = screen.getByRole('button', {
-      name: /test error/i,
+  it('shows error message', () => {
+    mockSearchPokemonQuery.mockReturnValue({
+      isLoading: false,
+      isSuccess: false,
+      data: [],
+      error: { status: 500 },
     });
 
-    await user.click(button);
+    renderWithProviders(<HomePage initialSearch="" />);
 
-    expect(await screen.findByText(/something went wrong/i)).toBeInTheDocument();
+    expect(screen.getByText(/failed to load/i)).toBeInTheDocument();
+  });
+
+  it('shows no results message', () => {
+    mockSearchPokemonQuery.mockReturnValue({
+      isLoading: false,
+      isSuccess: true,
+      data: [],
+      error: null,
+    });
+
+    renderWithProviders(<HomePage initialSearch="" />);
+
+    expect(screen.getByText(/no results found/i)).toBeInTheDocument();
   });
 });

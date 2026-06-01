@@ -1,4 +1,5 @@
-import { Spinner, useLocalStorage, useSearchPokemonQuery } from '@/shared';
+import { Spinner, useLocalStorage } from '@/shared';
+import { useSearchPokemonQuery } from '@/shared/api/pokemon-api';
 import { Pagination, ResultsList, SearchBar } from '@/widgets';
 import React, { useState } from 'react';
 import { Outlet, useSearchParams } from 'react-router-dom';

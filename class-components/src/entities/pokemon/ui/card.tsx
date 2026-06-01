@@ -1,4 +1,4 @@
-import { useAppDispatch, useAppSelector } from '@/app';
+import { useAppDispatch, useAppSelector } from '@/app/providers/store/hooks';
 import type { Pokemon } from '../model/types';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { toggleItem } from '@/entities/item/model/slice';
