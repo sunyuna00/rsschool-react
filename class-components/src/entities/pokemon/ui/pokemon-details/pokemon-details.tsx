@@ -32,7 +32,7 @@ export const PokemonDetails = () => {
 
         const data = await res.json();
 
-        const formatted = {
+        const formatted: Pokemon = {
           id: data.id,
           name: data.name,
 
@@ -45,7 +45,7 @@ export const PokemonDetails = () => {
           height: data.height,
 
           abilities: data.abilities.map((a: { ability: { name: string } }) => a.ability.name),
-        } as Pokemon;
+        };
 
         setPokemon(formatted);
       } catch {

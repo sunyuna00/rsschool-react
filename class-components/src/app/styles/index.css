@@ -1,8 +1,50 @@
 @import 'tailwindcss';
-
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 @custom-variant dark (&:is(.dark *));
 
 :root {
+  --font-size: 16px;
+  --background: #f5eef0;
+  --foreground: #442f36;
+  --card: #ffffff;
+  --card-foreground: #442f36;
+  --popover: #ffffff;
+  --popover-foreground: #442f36;
+  --primary: #9e7c81;
+  --primary-foreground: #ffffff;
+  --secondary: #d8c6cb;
+  --secondary-foreground: #442f36;
+  --muted: #d8c6cb;
+  --muted-foreground: #735d69;
+  --accent: #9e7c81;
+  --accent-foreground: #ffffff;
+  --destructive: #7d616c;
+  --destructive-foreground: #ffffff;
+  --border: rgba(158, 124, 129, 0.2);
+  --input: transparent;
+  --input-background: #ffffff;
+  --switch-background: #d8c6cb;
+  --font-weight-medium: 500;
+  --font-weight-normal: 400;
+  --ring: #9e7c81;
+  --radius: 0.75rem;
+  --sidebar: #f5eef0;
+  --sidebar-foreground: #442f36;
+  --sidebar-primary: #9e7c81;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #d8c6cb;
+  --sidebar-accent-foreground: #442f36;
+  --sidebar-border: rgba(158, 124, 129, 0.2);
+  --sidebar-ring: #9e7c81;
+  --overlay: rgba(0, 0, 0, 0.45);
+  --shadow-lg: rgba(0, 0, 0, 0.35);
+  --badge-bg: rgba(255, 111, 174, 0.12);
+  --badge-border: rgba(255, 111, 174, 0.18);
+}
+
+.dark {
   --font-size: 16px;
 
   --background: #0b0a12;
@@ -36,12 +78,6 @@
   --switch-background: #ff6fae;
   --ring: rgba(255, 111, 174, 0.35);
 
-  --chart-1: #ff6fae;
-  --chart-2: #ff9ecf;
-  --chart-3: #c084fc;
-  --chart-4: #f472b6;
-  --chart-5: #fb7185;
-
   --sidebar: #171325;
   --sidebar-foreground: #f6e9f2;
   --sidebar-primary: #ff6fae;
@@ -50,43 +86,51 @@
   --sidebar-accent-foreground: #f6e9f2;
   --sidebar-border: rgba(255, 111, 174, 0.15);
   --sidebar-ring: rgba(255, 111, 174, 0.35);
-
   --radius: 0.75rem;
+  --overlay: rgba(0, 0, 0, 0.6);
+  --shadow-lg: rgba(255, 111, 174, 0.25);
+  --badge-bg: rgba(255, 111, 174, 0.18);
+  --badge-border: rgba(255, 111, 174, 0.3);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-
   --color-card: var(--card);
   --color-card-foreground: var(--card-foreground);
-
   --color-popover: var(--popover);
   --color-popover-foreground: var(--popover-foreground);
-
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
-
   --color-secondary: var(--secondary);
   --color-secondary-foreground: var(--secondary-foreground);
-
   --color-muted: var(--muted);
   --color-muted-foreground: var(--muted-foreground);
-
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
-
   --color-destructive: var(--destructive);
   --color-destructive-foreground: var(--destructive-foreground);
-
   --color-border: var(--border);
   --color-input: var(--input);
+  --color-input-background: var(--input-background);
+  --color-switch-background: var(--switch-background);
   --color-ring: var(--ring);
-
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-overlay: var(--overlay);
+  --shadow-lg: var(--shadow-lg);
+  --badge-bg: var(--badge-bg);
+  --badge-border: var(--badge-border);
 }
 
 @layer base {
@@ -103,26 +147,44 @@
   }
 
   h1 {
-    font-weight: 500;
+    font-size: var(--text-2xl);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.5;
   }
 
   h2 {
-    font-weight: 500;
+    font-size: var(--text-xl);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.5;
   }
 
   h3 {
-    font-weight: 500;
+    font-size: var(--text-lg);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.5;
   }
 
   h4 {
-    font-weight: 500;
+    font-size: var(--text-base);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.5;
+  }
+
+  label {
+    font-size: var(--text-base);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.5;
   }
 
   button {
-    font-weight: 500;
+    font-size: var(--text-base);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.5;
   }
 
   input {
-    font-weight: 400;
+    font-size: var(--text-base);
+    font-weight: var(--font-weight-normal);
+    line-height: 1.5;
   }
 }

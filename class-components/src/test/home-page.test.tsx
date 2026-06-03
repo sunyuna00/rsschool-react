@@ -1,9 +1,9 @@
-import { render, screen, waitFor } from '@testing-library/react';
+import { screen, waitFor } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import userEvent from '@testing-library/user-event';
-import { MemoryRouter } from 'react-router-dom';
 import { fetchPokemon } from '@/entities';
-import { ErrorBoundary, App } from '@/app';
+import { ErrorBoundary, AppRouter } from '@/app';
+import { renderWithProviders } from './render-with-providers';
 
 vi.mock('@/entities');
 
@@ -25,11 +25,7 @@ describe('App', () => {
   });
 
   it('calls API on mount with empty search when no localStorage value exists', async () => {
-    render(
-      <MemoryRouter>
-        <App />
-      </MemoryRouter>
-    );
+    renderWithProviders(<AppRouter />);
 
     await waitFor(() => {
       expect(mockedFetchPokemon).toHaveBeenCalledWith('');
@@ -39,11 +35,7 @@ describe('App', () => {
   it('loads search from localStorage on mount', async () => {
     localStorage.setItem('search', 'pikachu');
 
-    render(
-      <MemoryRouter>
-        <App />
-      </MemoryRouter>
-    );
+    renderWithProviders(<AppRouter />);
 
     await waitFor(() => {
       expect(mockedFetchPokemon).toHaveBeenCalledWith('pikachu');
@@ -63,11 +55,7 @@ describe('App', () => {
       },
     ]);
 
-    render(
-      <MemoryRouter>
-        <App />
-      </MemoryRouter>
-    );
+    renderWithProviders(<AppRouter />);
 
     expect(await screen.findByText('pikachu')).toBeInTheDocument();
   });
@@ -104,11 +92,7 @@ describe('App', () => {
         })
     );
 
-    const { container } = render(
-      <MemoryRouter>
-        <App />
-      </MemoryRouter>
-    );
+    const { container } = renderWithProviders(<AppRouter />);
 
     expect(container.querySelector('.animate-spin')).toBeInTheDocument();
 
@@ -132,11 +116,7 @@ describe('App', () => {
       },
     ]);
 
-    render(
-      <MemoryRouter>
-        <App />
-      </MemoryRouter>
-    );
+    renderWithProviders(<AppRouter />);
 
     const input = screen.getByRole('textbox');
     const button = screen.getByRole('button', { name: /search/i });
@@ -162,11 +142,7 @@ describe('App', () => {
       },
     ]);
 
-    render(
-      <MemoryRouter>
-        <App />
-      </MemoryRouter>
-    );
+    renderWithProviders(<AppRouter />);
 
     const input = screen.getByRole('textbox');
     const button = screen.getByRole('button', {
@@ -184,11 +160,7 @@ describe('App', () => {
   it('shows error message when API fails', async () => {
     mockedFetchPokemon.mockRejectedValueOnce(new Error('Something went wrong'));
 
-    render(
-      <MemoryRouter>
-        <App />
-      </MemoryRouter>
-    );
+    renderWithProviders(<AppRouter />);
 
     expect(await screen.findByText('Something went wrong')).toBeInTheDocument();
   });
@@ -196,11 +168,7 @@ describe('App', () => {
   it('shows empty state when no results found', async () => {
     mockedFetchPokemon.mockResolvedValueOnce([]);
 
-    render(
-      <MemoryRouter>
-        <App />
-      </MemoryRouter>
-    );
+    renderWithProviders(<AppRouter />);
 
     expect(await screen.findByText(/no results found/i)).toBeInTheDocument();
   });
@@ -210,12 +178,10 @@ describe('App', () => {
 
     vi.spyOn(console, 'error').mockImplementation(() => {});
 
-    render(
-      <MemoryRouter>
+    renderWithProviders(
         <ErrorBoundary>
-          <App />
+          <AppRouter />
         </ErrorBoundary>
-      </MemoryRouter>
     );
 
     const button = screen.getByRole('button', {
