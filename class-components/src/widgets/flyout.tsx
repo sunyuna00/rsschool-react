@@ -1,5 +1,5 @@
 import { useAppDispatch, useAppSelector } from '@/app/providers/store/hooks';
-import { clearItems } from '@/entities/item/model/slice';
+import { clearItems } from '@/entities/pokemon/model/slice';
 import { downloadCsv } from '@/features';
 import { Download, Trash2 } from 'lucide-react';
 
@@ -62,9 +62,7 @@ export const Flyout = () => {
               shadow-inner
             "
           >
-            <p className="text-md font-bold text-foreground">
-              {selectedItems.length}
-            </p>
+            <p className="text-md font-bold text-foreground">{selectedItems.length}</p>
           </div>
 
           <div className="min-w-0">
@@ -81,9 +79,7 @@ export const Flyout = () => {
               {selectedItems.length} Pokémon selected
             </p>
 
-            <span className="text-sm text-muted-foreground">
-              Ready to export
-            </span>
+            <span className="text-sm text-muted-foreground">Ready to export</span>
           </div>
         </div>
 

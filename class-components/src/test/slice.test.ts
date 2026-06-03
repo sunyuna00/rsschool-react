@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import reducer, { toggleItem, clearItems } from '@/entities/item/model/slice';
+import reducer, { toggleItem, clearItems } from '@/entities/pokemon/model/slice';
 
 const pokemon = {
   id: 25,

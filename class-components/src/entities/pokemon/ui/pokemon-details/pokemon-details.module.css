@@ -2,7 +2,7 @@
   position: fixed;
   inset: 0;
 
-  background: rgba(0, 0, 0, 0.45);
+  background: var(--overlay);
 
   backdrop-filter: blur(6px);
 
@@ -32,7 +32,7 @@
 
   animation: panelShow 0.3s ease;
 
-  box-shadow: -10px 0 40px rgba(0, 0, 0, 0.35);
+  box-shadow: -10px 0 40px var(--shadow-lg);
 }
 
 .header {
@@ -181,9 +181,9 @@
 
   border-radius: 999px;
 
-  background: rgba(255, 111, 174, 0.12);
+  background: var(--badge-bg);
 
-  border: 1px solid rgba(255, 111, 174, 0.18);
+  border: 1px solid var(--badge-border);
 
   color: var(--foreground);
 
