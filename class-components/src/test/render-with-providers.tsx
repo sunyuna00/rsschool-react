@@ -6,13 +6,14 @@ import { Provider } from 'react-redux';
 
 import { MemoryRouter } from 'react-router-dom';
 import { store } from '@/app/providers/store/store';
+import { ThemeProvider } from '@/app/providers/theme/theme-context';
 
-export const renderWithProviders = (
-  ui: ReactElement
-) => {
+export const renderWithProviders = (ui: ReactElement) => {
   const Wrapper = ({ children }: PropsWithChildren) => (
     <Provider store={store}>
-      <MemoryRouter>{children}</MemoryRouter>
+      <ThemeProvider>
+        <MemoryRouter>{children}</MemoryRouter>
+      </ThemeProvider>
     </Provider>
   );
 

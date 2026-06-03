@@ -3,7 +3,7 @@ import { AppLayout } from '../layouts';
 import { AboutPage, HomePageContainer, NotFoundPage } from '@/pages';
 import { PokemonDetails } from '@/entities';
 
-export const App = () => {
+export const AppRouter = () => {
   return (
     <Routes>
       <Route path="/" element={<AppLayout />}>

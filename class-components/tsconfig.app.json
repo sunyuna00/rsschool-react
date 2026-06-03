@@ -48,5 +48,5 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true
   },
-  "include": ["src", "src/app/router/App.tsx"]
+  "include": ["src", "src/app/router/App-Router.tsx"]
 }

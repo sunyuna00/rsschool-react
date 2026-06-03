@@ -1,7 +1,7 @@
 import { useAppDispatch, useAppSelector } from '@/app';
 import type { Pokemon } from '../model/types';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { toggleItem } from '@/entities/item/model/slice';
+import { toggleItem } from '@/entities/pokemon/model/slice';
 import { Check } from 'lucide-react';
 
 type Props = {

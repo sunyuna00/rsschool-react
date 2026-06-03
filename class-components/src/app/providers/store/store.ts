@@ -1,5 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
-import selectedItemsReducer from '@/entities/item/model/slice';
+import selectedItemsReducer from '@/entities/pokemon/model/slice';
 
 export const store = configureStore({
   reducer: {

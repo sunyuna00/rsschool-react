@@ -6,38 +6,42 @@
 
 :root {
   --font-size: 16px;
-  --background: #F5EEF0;
-  --foreground: #442F36;
+  --background: #f5eef0;
+  --foreground: #442f36;
   --card: #ffffff;
-  --card-foreground: #442F36;
+  --card-foreground: #442f36;
   --popover: #ffffff;
-  --popover-foreground: #442F36;
-  --primary: #9E7C81;
+  --popover-foreground: #442f36;
+  --primary: #9e7c81;
   --primary-foreground: #ffffff;
-  --secondary: #D8C6CB;
-  --secondary-foreground: #442F36;
-  --muted: #D8C6CB;
-  --muted-foreground: #735D69;
-  --accent: #9E7C81;
+  --secondary: #d8c6cb;
+  --secondary-foreground: #442f36;
+  --muted: #d8c6cb;
+  --muted-foreground: #735d69;
+  --accent: #9e7c81;
   --accent-foreground: #ffffff;
-  --destructive: #7D616C;
+  --destructive: #7d616c;
   --destructive-foreground: #ffffff;
   --border: rgba(158, 124, 129, 0.2);
   --input: transparent;
   --input-background: #ffffff;
-  --switch-background: #D8C6CB;
+  --switch-background: #d8c6cb;
   --font-weight-medium: 500;
   --font-weight-normal: 400;
-  --ring: #9E7C81;
+  --ring: #9e7c81;
   --radius: 0.75rem;
-  --sidebar: #F5EEF0;
-  --sidebar-foreground: #442F36;
-  --sidebar-primary: #9E7C81;
+  --sidebar: #f5eef0;
+  --sidebar-foreground: #442f36;
+  --sidebar-primary: #9e7c81;
   --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #D8C6CB;
-  --sidebar-accent-foreground: #442F36;
+  --sidebar-accent: #d8c6cb;
+  --sidebar-accent-foreground: #442f36;
   --sidebar-border: rgba(158, 124, 129, 0.2);
-  --sidebar-ring: #9E7C81;
+  --sidebar-ring: #9e7c81;
+  --overlay: rgba(0, 0, 0, 0.45);
+  --shadow-lg: rgba(0, 0, 0, 0.35);
+  --badge-bg: rgba(255, 111, 174, 0.12);
+  --badge-border: rgba(255, 111, 174, 0.18);
 }
 
 .dark {
@@ -82,8 +86,11 @@
   --sidebar-accent-foreground: #f6e9f2;
   --sidebar-border: rgba(255, 111, 174, 0.15);
   --sidebar-ring: rgba(255, 111, 174, 0.35);
-
   --radius: 0.75rem;
+  --overlay: rgba(0, 0, 0, 0.6);
+  --shadow-lg: rgba(255, 111, 174, 0.25);
+  --badge-bg: rgba(255, 111, 174, 0.18);
+  --badge-border: rgba(255, 111, 174, 0.3);
 }
 
 @theme inline {
@@ -120,6 +127,10 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
+  --color-overlay: var(--overlay);
+  --shadow-lg: var(--shadow-lg);
+  --badge-bg: var(--badge-bg);
+  --badge-border: var(--badge-border);
 }
 
 @layer base {
