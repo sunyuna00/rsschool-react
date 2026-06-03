@@ -1,35 +1,44 @@
-import reducer, { clearItems, toggleItem } from "@/entities/item/model/slice";
-import type { Pokemon } from "@/entities/pokemon/model/types";
+import { describe, it, expect } from 'vitest';
+import reducer, { toggleItem, clearItems } from '@/entities/item/model/slice';
 
-
-const mockPokemon = {
-  id: 1,
+const pokemon = {
+  id: 25,
   name: 'pikachu',
-  image: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png',
-  height: 10,
-  weight: 20,
+  image: 'pikachu.png',
+  height: 4,
+  weight: 60,
+  abilities: ['static'],
   types: ['electric'],
-  abilities: ['static', 'lightning-rod'],
-} as Pokemon;
+};
 
-test('should add item', () => {
-  const state = reducer(undefined, toggleItem(mockPokemon));
+describe('selectedItemsSlice', () => {
+  it('should return initial state', () => {
+    expect(reducer(undefined, { type: 'unknown' })).toEqual({
+      items: [],
+    });
+  });
 
-  expect(state.items.length).toBe(1);
-});
+  it('should add item when not exists', () => {
+    const state = reducer(undefined, toggleItem(pokemon));
 
-test('should remove item if exists', () => {
-  const initial = { items: [mockPokemon] };
+    expect(state.items).toHaveLength(1);
+    expect(state.items[0]!.id).toBe(25);
+  });
 
-  const state = reducer(initial, toggleItem(mockPokemon));
+  it('should remove item when exists', () => {
+    const state1 = reducer(undefined, toggleItem(pokemon));
+    const state2 = reducer(state1, toggleItem(pokemon));
 
-  expect(state.items.length).toBe(0);
-});
+    expect(state2.items).toHaveLength(0);
+  });
 
-test('should clear items', () => {
-  const initial = { items: [mockPokemon] };
+  it('should clear items', () => {
+    const startState = {
+      items: [pokemon],
+    };
 
-  const state = reducer(initial, clearItems());
+    const state = reducer(startState, clearItems());
 
-  expect(state.items).toEqual([]);
+    expect(state.items).toEqual([]);
+  });
 });
