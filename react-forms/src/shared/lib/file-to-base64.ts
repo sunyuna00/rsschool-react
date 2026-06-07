@@ -1,23 +1,23 @@
-export const fileToBase64 = (file: File): Promise<string> => {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
+export const fileToBase64 = (
+  file: File,
+): Promise<string> => {
+  return new Promise(
+    (resolve, reject) => {
+      const reader = new FileReader();
 
-    reader.readAsDataURL(file);
+      reader.onload = () => {
+        resolve(reader.result as string);
+      };
 
-    reader.onload = () => {
-      if (typeof reader.result === "string") {
-        resolve(reader.result);
-      } else {
+      reader.onerror = () => {
         reject(
-          new Error("Failed to convert file to base64: result is not a string"),
+          new Error(
+            'Failed to read file',
+          ),
         );
-      }
-    };
+      };
 
-    reader.onerror = (error) => {
-      reject(error || new Error("Failed to convert file to base64"));
-    };
-
-    reader.readAsDataURL(file);
-  });
+      reader.readAsDataURL(file);
+    },
+  );
 };

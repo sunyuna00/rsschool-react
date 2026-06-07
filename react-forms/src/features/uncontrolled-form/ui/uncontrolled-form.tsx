@@ -83,7 +83,7 @@ export const UncontrolledForm = () => {
     setErrors({});
 
     form.reset();
-    setPasswordValue('');
+    setPasswordValue("");
     console.log({
       ...result.data,
       image: imageBase64,
@@ -91,57 +91,83 @@ export const UncontrolledForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <div>
-        <label htmlFor="name">Name</label>
+    <form onSubmit={handleSubmit} className="space-y-5">
+      <h2 className="sticky top-0 z-10 bg-popover pb-3 pt-2 text-xl font-semibold border-b border-border">
+        Uncontrolled Form
+      </h2>
 
-        <input id="name" name="name" className="w-full rounded border p-2" />
-
-        {errors.name && <p className="text-red-500">{errors.name}</p>}
+      <div className="space-y-1">
+        <label htmlFor="name" className="text-sm font-medium">
+          Name
+        </label>
+        <input
+          id="name"
+          name="name"
+          className="w-full rounded-md border border-border bg-input-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-ring"
+        />
+        {errors.name && (
+          <p className="text-xs text-destructive">{errors.name}</p>
+        )}
       </div>
 
-      <div>
-        <label htmlFor="age">Age</label>
-
+      <div className="space-y-1">
+        <label htmlFor="age" className="text-sm font-medium">
+          Age
+        </label>
         <input
           id="age"
           name="age"
           type="number"
-          className="w-full rounded border p-2"
+          className="w-full rounded-md border border-border bg-input-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-ring"
         />
-        {errors.age && <p className="text-red-500">{errors.age}</p>}
+        {errors.age && <p className="text-xs text-destructive">{errors.age}</p>}
       </div>
 
-      <div>
-        <label htmlFor="email">Email</label>
-
-        <input id="email" name="email" className="w-full rounded border p-2" />
-        {errors.email && <p className="text-red-500">{errors.email}</p>}
+      <div className="space-y-1">
+        <label htmlFor="email" className="text-sm font-medium">
+          Email
+        </label>
+        <input
+          id="email"
+          name="email"
+          className="w-full rounded-md border border-border bg-input-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-ring"
+        />
+        {errors.email && (
+          <p className="text-xs text-destructive">{errors.email}</p>
+        )}
       </div>
 
-      <div>
-        <label htmlFor="gender">Gender</label>
-
-        <select id="gender" name="gender" className="w-full rounded border p-2">
+      <div className="space-y-1">
+        <label htmlFor="gender" className="text-sm font-medium">
+          Gender
+        </label>
+        <select
+          id="gender"
+          name="gender"
+          className="w-full rounded-md border border-border bg-input-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-ring"
+        >
           <option value="">Select</option>
-
           <option value="male">Male</option>
-
           <option value="female">Female</option>
         </select>
-        {errors.gender && <p className="text-red-500">{errors.gender}</p>}
+        {errors.gender && (
+          <p className="text-xs text-destructive">{errors.gender}</p>
+        )}
       </div>
 
-      <div>
-        <label htmlFor="country">Country</label>
-
+      <div className="space-y-1">
+        <label htmlFor="country" className="text-sm font-medium">
+          Country
+        </label>
         <input
           id="country"
           name="country"
           list="countries"
-          className="w-full rounded border p-2"
+          className="w-full rounded-md border border-border bg-input-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-ring"
         />
-        {errors.country && <p className="text-red-500">{errors.country}</p>}
+        {errors.country && (
+          <p className="text-xs text-destructive">{errors.country}</p>
+        )}
 
         <datalist id="countries">
           {countries.map((country) => (
@@ -150,54 +176,68 @@ export const UncontrolledForm = () => {
         </datalist>
       </div>
 
-      <div>
-        <label htmlFor="password">Password</label>
-
+      <div className="space-y-1">
+        <label htmlFor="password" className="text-sm font-medium">
+          Password
+        </label>
         <input
           id="password"
           name="password"
           type="password"
-          className="w-full rounded border p-2"
-          onChange={(event) => setPasswordValue(event.target.value)}
+          onChange={(e) => setPasswordValue(e.target.value)}
+          className="w-full rounded-md border border-border bg-input-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-ring"
         />
         <PasswordStrength password={passwordValue} />
-        {errors.password && <p className="text-red-500">{errors.password}</p>}
+        {errors.password && (
+          <p className="text-xs text-destructive">{errors.password}</p>
+        )}
       </div>
 
-      <div>
-        <label htmlFor="confirmPassword">Confirm Password</label>
-
+      <div className="space-y-1">
+        <label htmlFor="confirmPassword" className="text-sm font-medium">
+          Confirm Password
+        </label>
         <input
           id="confirmPassword"
           name="confirmPassword"
           type="password"
-          className="w-full rounded border p-2"
+          className="w-full rounded-md border border-border bg-input-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-ring"
         />
         {errors.confirmPassword && (
-          <p className="text-red-500">{errors.confirmPassword}</p>
+          <p className="text-xs text-destructive">{errors.confirmPassword}</p>
         )}
       </div>
 
-      <div>
-        <label htmlFor="image">Image</label>
-
-        <input id="image" name="image" type="file" accept=".png,.jpg,.jpeg" />
+      <div className="space-y-1">
+        <label htmlFor="image" className="text-sm font-medium">
+          Image
+        </label>
+        <input
+          id="image"
+          name="image"
+          type="file"
+          accept=".png,.jpg,.jpeg"
+          className="w-full text-sm"
+        />
         {errors.image && (
-          <p className="mt-1 text-sm text-red-500">{errors.image}</p>
+          <p className="text-xs text-destructive">{errors.image}</p>
         )}
       </div>
 
-      <div className="flex gap-2">
-        <input id="terms" name="terms" type="checkbox" />
-
-        <label htmlFor="terms">Accept Terms</label>
+      <div className="flex items-center gap-2">
+        <input id="terms" name="terms" type="checkbox" className="h-4 w-4" />
+        <label htmlFor="terms" className="text-sm">
+          Accept Terms
+        </label>
       </div>
 
-      {errors.terms && <p className="text-red-500">{errors.terms}</p>}
+      {errors.terms && (
+        <p className="text-xs text-destructive">{errors.terms}</p>
+      )}
 
       <button
         type="submit"
-        className="rounded bg-primary px-4 py-2 text-primary-foreground"
+        className="w-full rounded-md bg-primary py-2.5 font-medium text-primary-foreground transition hover:opacity-90 active:scale-[0.99]"
       >
         Submit
       </button>

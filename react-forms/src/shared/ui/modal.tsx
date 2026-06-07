@@ -51,7 +51,7 @@ export const Modal = ({ isOpen, onClose, children }: Props) => {
 
   return createPortal(
     <div
-      className="fixed inset-0 flex items-center justify-center bg-black/50"
+      className="fixed inset-0 flex items-center justify-center bg-black/30 backdrop-blur-md p-4"
       onClick={onClose}
       role="dialog"
       aria-modal="true"
@@ -59,8 +59,8 @@ export const Modal = ({ isOpen, onClose, children }: Props) => {
       <div
         ref={modalRef}
         tabIndex={-1}
-        className="rounded bg-white p-6 focus:outline-none"
-        onClick={(event) => event.stopPropagation()}
+        className="border w-full max-w-md max-h-[80vh] overflow-y-auto rounded-2xl bg-white p-5 sm:p-6"
+        onClick={(e) => e.stopPropagation()}
       >
         {children}
       </div>
