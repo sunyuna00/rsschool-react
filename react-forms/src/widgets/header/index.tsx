@@ -2,6 +2,7 @@ import { useState } from "react";
 import { UncontrolledForm } from "@/features/uncontrolled-form";
 import { Modal } from "@/shared/ui/modal";
 import { FileText } from "lucide-react";
+import { RHFForm } from "@/features/rhf-form";
 
 
 export const Header = () => {
@@ -48,7 +49,7 @@ export const Header = () => {
         </Modal>
 
         <Modal isOpen={isHookFormOpen} onClose={() => setIsHookFormOpen(false)}>
-          <div className="p-4">React Hook Form here</div>
+          <RHFForm onSuccess={() => setIsHookFormOpen(false)}/>
         </Modal>
       </div>
     </div>
