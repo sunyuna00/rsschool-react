@@ -6,7 +6,7 @@ type State = {
 };
 
 const initialState: State = {
-  items: [],
+  items: JSON.parse(localStorage.getItem("submissions") || "[]"),
 };
 
 const submissionSlice = createSlice({
@@ -15,6 +15,8 @@ const submissionSlice = createSlice({
   reducers: {
     addSubmission: (state, action: PayloadAction<Submission>) => {
       state.items.unshift(action.payload);
+
+      localStorage.setItem("submissions", JSON.stringify(state.items));
     },
   },
 });

@@ -9,7 +9,11 @@ import {
 } from "@/shared";
 import { useState } from "react";
 
-export const UncontrolledForm = () => {
+type Props = {
+  onSuccess?: () => void;
+};
+
+export const UncontrolledForm = ({ onSuccess }: Props) => {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [passwordValue, setPasswordValue] = useState("");
 
@@ -84,6 +88,7 @@ export const UncontrolledForm = () => {
 
     form.reset();
     setPasswordValue("");
+    onSuccess?.();
     console.log({
       ...result.data,
       image: imageBase64,
