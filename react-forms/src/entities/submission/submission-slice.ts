@@ -1,15 +1,5 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
-
-type Submission = {
-  id: string;
-  name: string;
-  age: number;
-  email: string;
-  gender: string;
-  country: string;
-  image?: string;
-  createdAt: number;
-};
+import { type Submission } from "./model/types";
 
 type State = {
   items: Submission[];

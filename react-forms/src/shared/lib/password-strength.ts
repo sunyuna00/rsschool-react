@@ -1,9 +1,11 @@
-export const getPasswordStrength = (password: string): number => {
-    let score = 0;
+export const getPasswordStrength = (
+  password: string,
+) => ({
+  hasNumber: /\d/.test(password),
 
-    if (/[0-9]/.test(password)) score++;
-    if (/[a-z]/.test(password)) score++;
-    if (/[A-Z]/.test(password)) score++;
-    if (/[^A-Za-z0-9]/.test(password)) score++;
-    return score;
-}
+  hasUppercase: /[A-Z]/.test(password),
+
+  hasLowercase: /[a-z]/.test(password),
+
+  hasSpecial: /[^A-Za-z0-9]/.test(password),
+});

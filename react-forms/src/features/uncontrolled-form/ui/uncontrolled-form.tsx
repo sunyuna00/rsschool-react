@@ -3,14 +3,18 @@ import {
   fileToBase64,
   formSchema,
   useAppDispatch,
+  useAppSelector,
   validateImage,
+  PasswordStrength,
 } from "@/shared";
 import { useState } from "react";
 
 export const UncontrolledForm = () => {
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const dispatch = useAppDispatch();
+  const [passwordValue, setPasswordValue] = useState("");
 
+  const dispatch = useAppDispatch();
+  const countries = useAppSelector((state) => state.countries.items);
   const handleSubmit = async (event: React.SyntheticEvent<HTMLFormElement>) => {
     event.preventDefault();
 
@@ -79,6 +83,7 @@ export const UncontrolledForm = () => {
     setErrors({});
 
     form.reset();
+    setPasswordValue('');
     console.log({
       ...result.data,
       image: imageBase64,
@@ -139,9 +144,9 @@ export const UncontrolledForm = () => {
         {errors.country && <p className="text-red-500">{errors.country}</p>}
 
         <datalist id="countries">
-          <option value="Kyrgyzstan" />
-          <option value="Kazakhstan" />
-          <option value="Uzbekistan" />
+          {countries.map((country) => (
+            <option key={country} value={country} />
+          ))}
         </datalist>
       </div>
 
@@ -153,7 +158,9 @@ export const UncontrolledForm = () => {
           name="password"
           type="password"
           className="w-full rounded border p-2"
+          onChange={(event) => setPasswordValue(event.target.value)}
         />
+        <PasswordStrength password={passwordValue} />
         {errors.password && <p className="text-red-500">{errors.password}</p>}
       </div>
 
@@ -187,7 +194,7 @@ export const UncontrolledForm = () => {
       </div>
 
       {errors.terms && <p className="text-red-500">{errors.terms}</p>}
-      
+
       <button
         type="submit"
         className="rounded bg-primary px-4 py-2 text-primary-foreground"
