@@ -18,47 +18,29 @@ export const formSchema = z
     email: z
       .string()
       .trim()
-      .min(1, 'Email is required')
       .refine(validateEmail, {
-        message: 'Invalid email',
-      }),
+      message: 'Invalid email',
+    }),
 
-    gender: z
-      .string()
-      .min(1, 'Please select a gender'),
-
-    country: z
-      .string()
-      .min(1, 'Please select a country'),
+    gender: z.string().min(1, 'Gender is required'),
+    country: z.string().min(1, 'Country is required'),
 
     password: z
       .string()
-      .min(8, 'Password must contain at least 8 characters')
-      .regex(/[A-Z]/, {
-        message: 'Password must contain an uppercase letter',
-      })
-      .regex(/[a-z]/, {
-        message: 'Password must contain a lowercase letter',
-      })
-      .regex(/\d/, {
-        message: 'Password must contain a digit',
-      }),
+      .min(8, 'Password must be at least 8 characters'),
 
-    confirmPassword: z.string(),
+    confirmPassword: z
+      .string()
+      .min(1, 'Confirm password is required'),
 
-    terms: z.boolean().refine((value) => value, {
-      message: 'You must accept the terms',
+    terms: z.boolean().refine((v) => v, {
+      message: 'You must accept terms',
     }),
-
-    image: z.instanceof(File).optional(),
   })
   .refine(
-    ({ password, confirmPassword }) =>
-      password === confirmPassword,
+    (data) => data.password === data.confirmPassword,
     {
       path: ['confirmPassword'],
       message: 'Passwords do not match',
-    }
+    },
   );
-
-export type FormValues = z.infer<typeof formSchema>;

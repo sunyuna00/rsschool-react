@@ -1,4 +1,4 @@
-import { AppRouterProvider } from "./providers/router-provider/router-provider";
+import { AppRouterProvider } from "./providers";
 
 export const App = () => {
   return <AppRouterProvider />;

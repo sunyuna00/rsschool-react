@@ -8,7 +8,7 @@ type Submission = {
   gender: string;
   country: string;
   image?: string;
-  createdAt: string;
+  createdAt: number;
 };
 
 type State = {
