@@ -7,6 +7,7 @@ import {
   validateImage,
   PasswordStrength,
 } from "@/shared";
+import { Upload } from "lucide-react";
 import { useState } from "react";
 
 type Props = {
@@ -60,6 +61,15 @@ export const UncontrolledForm = ({ onSuccess }: Props) => {
     };
 
     const result = formSchema.safeParse(data);
+
+    if (!countries.includes(data.country)) {
+      setErrors((prev) => ({
+        ...prev,
+        country: "Country does not exist in list",
+      }));
+      return;
+    }
+
     if (!result.success) {
       const fieldErrors: Record<string, string> = {};
       result.error.issues.forEach((issue) => {
@@ -215,14 +225,23 @@ export const UncontrolledForm = ({ onSuccess }: Props) => {
 
       <div className="space-y-1">
         <label htmlFor="image" className="text-sm font-medium">
-          Image
+          Profile Image
         </label>
+
+        <label
+          htmlFor="image"
+          className="mt-2 flex h-12 w-full cursor-pointer items-center justify-center gap-2 rounded-xl bg-muted text-sm font-medium text-foreground hover:bg-muted/80 active:scale-[0.99]"
+        >
+          <Upload className="h-4 w-4" />
+          Click to upload image
+        </label>
+
         <input
           id="image"
           name="image"
           type="file"
           accept=".png,.jpg,.jpeg"
-          className="w-full text-sm"
+          className="hidden"
         />
         {errors.image && (
           <p className="text-xs text-destructive">{errors.image}</p>
@@ -242,7 +261,7 @@ export const UncontrolledForm = ({ onSuccess }: Props) => {
 
       <button
         type="submit"
-        className="w-full rounded-md bg-primary py-2.5 font-medium text-primary-foreground transition hover:opacity-90 active:scale-[0.99]"
+        className="cursor-pointer w-full rounded-md bg-primary py-2.5 font-medium text-primary-foreground transition hover:opacity-90 active:scale-[0.99]"
       >
         Submit
       </button>

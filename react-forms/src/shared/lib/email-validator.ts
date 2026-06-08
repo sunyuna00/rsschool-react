@@ -1,7 +1,27 @@
-export const validateEmail = (email: string): boolean => {
+export const validateEmail = (
+  email: string,
+): boolean => {
   const cleanedEmail = email.trim();
 
-  const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  const parts = cleanedEmail.split("@");
 
-  return emailRegex.test(cleanedEmail);
+  if (parts.length !== 2) {
+    return false;
+  }
+
+  const [localPart, domain] = parts;
+
+  if (!localPart) {
+    return false;
+  }
+
+  if (!domain) {
+    return false;
+  }
+
+  if (!domain.includes(".")) {
+    return false;
+  }
+
+  return true;
 };

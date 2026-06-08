@@ -26,9 +26,7 @@ export const formSchema = z
 
     confirmPassword: z.string().min(1, "Confirm password is required"),
 
-    image: z.instanceof(FileList).refine((files) => files.length > 0, {
-      message: "Image is required",
-    }),
+    image: z.unknown().optional(),
 
     terms: z.boolean().refine(Boolean, {
       message: "You must accept terms",

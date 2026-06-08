@@ -31,14 +31,14 @@ export const Header = () => {
         <div className="flex flex-col gap-2 w-full md:flex-row md:gap-3 md:w-auto">
           <button
             onClick={() => setIsModalOpen(true)}
-            className="w-full md:w-auto rounded-md bg-foreground px-4 py-2.5 text-sm font-medium text-background hover:opacity-90 transition"
+            className="cursor-pointer w-full md:w-auto rounded-md bg-foreground px-4 py-2.5 text-sm font-medium text-background hover:opacity-90 transition"
           >
             Uncontrolled Form
           </button>
 
           <button
             onClick={() => setIsHookFormOpen(true)}
-            className="w-full md:w-auto rounded-md bg-foreground px-4 py-2.5 text-sm font-medium text-background hover:opacity-90 transition"
+            className="cursor-pointer w-full md:w-auto rounded-md bg-foreground px-4 py-2.5 text-sm font-medium text-background hover:opacity-90 transition"
           >
             React Hook Form
           </button>
