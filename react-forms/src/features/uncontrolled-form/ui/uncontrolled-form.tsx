@@ -16,8 +16,8 @@ type Props = {
 
 export const UncontrolledForm = ({ onSuccess }: Props) => {
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const [passwordValue, setPasswordValue] = useState("");
-
+  const [resetKey, setResetKey] = useState(0);
+  const [passwordStrengthValue, setPasswordStrengthValue] = useState("");
   const dispatch = useAppDispatch();
   const countries = useAppSelector((state) => state.countries.items);
   const handleSubmit = async (event: React.SyntheticEvent<HTMLFormElement>) => {
@@ -97,7 +97,9 @@ export const UncontrolledForm = ({ onSuccess }: Props) => {
     setErrors({});
 
     form.reset();
-    setPasswordValue("");
+    setPasswordStrengthValue("");
+    setResetKey((prev) => prev + 1);
+
     onSuccess?.();
     console.log({
       ...result.data,
@@ -197,12 +199,13 @@ export const UncontrolledForm = ({ onSuccess }: Props) => {
         </label>
         <input
           id="password"
+          key={resetKey}
           name="password"
           type="password"
-          onChange={(e) => setPasswordValue(e.target.value)}
+          onChange={(e) => setPasswordStrengthValue(e.target.value)}
           className="w-full rounded-md border border-border bg-input-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-ring"
         />
-        <PasswordStrength password={passwordValue} />
+        <PasswordStrength password={passwordStrengthValue}  />
         {errors.password && (
           <p className="text-xs text-destructive">{errors.password}</p>
         )}

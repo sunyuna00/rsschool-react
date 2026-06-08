@@ -26,7 +26,7 @@ export const PasswordStrength = ({ password }: Props) => {
   ];
 
   return (
-    <div className="mt-2 space-y-1 text-sm">
+    <div data-testid="password-strength" className="mt-2 space-y-1 text-sm">
       {checks.map(({ label, valid }) => (
         <p key={label} className="flex items-center gap-2">
           {valid ? <Check size={16} /> : <X size={16} />}
