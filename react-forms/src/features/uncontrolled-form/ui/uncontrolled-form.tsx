@@ -17,6 +17,7 @@ type Props = {
 export const UncontrolledForm = ({ onSuccess }: Props) => {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [resetKey, setResetKey] = useState(0);
+  const [fileName, setFileName] = useState("");
   const [passwordStrengthValue, setPasswordStrengthValue] = useState("");
   const dispatch = useAppDispatch();
   const countries = useAppSelector((state) => state.countries.items);
@@ -205,7 +206,7 @@ export const UncontrolledForm = ({ onSuccess }: Props) => {
           onChange={(e) => setPasswordStrengthValue(e.target.value)}
           className="w-full rounded-md border border-border bg-input-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-ring"
         />
-        <PasswordStrength password={passwordStrengthValue}  />
+        <PasswordStrength password={passwordStrengthValue} />
         {errors.password && (
           <p className="text-xs text-destructive">{errors.password}</p>
         )}
@@ -235,8 +236,8 @@ export const UncontrolledForm = ({ onSuccess }: Props) => {
           htmlFor="image"
           className="mt-2 flex h-12 w-full cursor-pointer items-center justify-center gap-2 rounded-xl bg-muted text-sm font-medium text-foreground hover:bg-muted/80 active:scale-[0.99]"
         >
-          <Upload className="h-4 w-4" />
-          Click to upload image
+          {!fileName && <Upload className="h-4 w-4" />}
+          {fileName || "Click to upload image"}
         </label>
 
         <input
@@ -245,6 +246,11 @@ export const UncontrolledForm = ({ onSuccess }: Props) => {
           type="file"
           accept=".png,.jpg,.jpeg"
           className="hidden"
+          onChange={(e) => {
+            const file = e.target.files?.[0];
+
+            setFileName(file?.name ?? "");
+          }}
         />
         {errors.image && (
           <p className="text-xs text-destructive">{errors.image}</p>

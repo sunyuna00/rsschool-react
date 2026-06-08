@@ -38,6 +38,9 @@ export const RHFForm = ({ onSuccess }: Props) => {
 
   const password =
     useWatch({ control, name: "password", defaultValue: "" }) || "";
+  const imageFile = useWatch({ control, name: "image" }) as
+    | FileList
+    | undefined;
 
   const onSubmit = async (data: FormInput) => {
     const parsedData = formSchema.parse(data);
@@ -234,8 +237,8 @@ export const RHFForm = ({ onSuccess }: Props) => {
           htmlFor="rhf-image"
           className="mt-2 flex h-12 w-full cursor-pointer items-center justify-center gap-2 rounded-xl bg-muted text-sm font-medium text-foreground hover:bg-muted/80 active:scale-[0.99]"
         >
-          <Upload className="h-4 w-4" />
-          Click to upload image
+          {!imageFile?.[0]?.name && <Upload className="h-4 w-4" />}
+          {imageFile?.[0]?.name || "Click to upload image"}
         </label>
 
         <input
