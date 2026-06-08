@@ -1,6 +1,6 @@
 import { Check, X } from "lucide-react";
 
-import { getPasswordStrength } from "../lib/password-strength";
+import { getPasswordStrength } from "../../lib/password-strength";
 
 type Props = {
   password: string;

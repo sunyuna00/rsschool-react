@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { validateEmail } from "./email-validator";
+import { validateEmail } from "../email-validator";
 
 export const formSchema = z
   .object({
