@@ -2,14 +2,14 @@ import { render } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { store } from '@/app/providers/store/store';
-import { App, ThemeProvider } from '@/app';
+import { AppRouter, ThemeProvider } from '@/app';
 
 const renderApp = (route: string) =>
   render(
     <Provider store={store}>
       <ThemeProvider>
         <MemoryRouter initialEntries={[route]}>
-          <App />
+          <AppRouter />
         </MemoryRouter>
       </ThemeProvider>
     </Provider>
