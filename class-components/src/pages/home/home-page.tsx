@@ -1,7 +1,7 @@
-import { fetchPokemon, type Pokemon } from '@/entities';
 import { Spinner, useLocalStorage } from '@/shared';
+import { useSearchPokemonQuery } from '@/shared/api/pokemon-api';
 import { Pagination, ResultsList, SearchBar } from '@/widgets';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Outlet, useSearchParams } from 'react-router-dom';
 
 type Props = {
@@ -10,10 +10,7 @@ type Props = {
 
 export const HomePage: React.FC<Props> = ({ initialSearch }) => {
   const [query, setQuery] = useLocalStorage('search', initialSearch ?? '');
-  const [results, setResults] = useState<Pokemon[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [hasSearched, setHasSearched] = useState(false);
+  const { data: results = [], isLoading: loading, error, isSuccess } = useSearchPokemonQuery(query);
   const [triggerError, setTriggerError] = useState(false);
 
   const [searchParams, setSearchParams] = useSearchParams();
@@ -30,27 +27,6 @@ export const HomePage: React.FC<Props> = ({ initialSearch }) => {
   if (triggerError) {
     throw new Error('Test Error Boundary');
   }
-
-  useEffect(() => {
-    const load = async () => {
-      setLoading(true);
-      setError(null);
-
-      try {
-        const data = await fetchPokemon(query);
-        setResults(data);
-        setHasSearched(true);
-      } catch (e) {
-        setError(e instanceof Error ? e.message : 'Something went wrong');
-        setResults([]);
-        setHasSearched(true);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    load();
-  }, [query]);
 
   const updateParams = (updates: Record<string, string>) => {
     setSearchParams((prev) => {
@@ -96,9 +72,9 @@ export const HomePage: React.FC<Props> = ({ initialSearch }) => {
             </>
           )}
 
-          {!loading && !error && results.length === 0 && hasSearched && <p>No results found</p>}
+          {!loading && !error && isSuccess && results.length === 0 && <p>No results found</p>}
 
-          {!loading && error && <p>{error}</p>}
+          {!loading && error && <p>Failed to load Pokémon</p>}
 
           <div className="flex justify-center mt-6">
             <button
@@ -110,7 +86,7 @@ export const HomePage: React.FC<Props> = ({ initialSearch }) => {
           </div>
         </section>
 
-          <Outlet />
+        <Outlet />
       </div>
     </div>
   );

@@ -1,7 +1,9 @@
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import '@/app';
-import { AppProviders, AppRouter, ErrorBoundary } from '@/app';
+import { AppRouter, ErrorBoundary } from '@/app';
+import { AppProviders } from './app/providers/app-providers';
+
 
 const rootElement = document.getElementById('root');
 

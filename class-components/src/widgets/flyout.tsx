@@ -1,4 +1,4 @@
-import { useAppDispatch, useAppSelector } from '@/app';
+import { useAppDispatch, useAppSelector } from '@/app/providers/store/hooks';
 import { clearItems } from '@/entities/pokemon/model/slice';
 import { downloadCsv } from '@/features';
 import { Download, Trash2 } from 'lucide-react';
